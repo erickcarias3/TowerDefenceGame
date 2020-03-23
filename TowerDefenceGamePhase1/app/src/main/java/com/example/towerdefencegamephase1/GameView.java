@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -13,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 public class GameView extends SurfaceView implements Runnable {
+
 
     // Objects for the game loop/thread
     private Thread mThread = null;
@@ -28,17 +30,17 @@ public class GameView extends SurfaceView implements Runnable {
     final long MILLIS_PER_SECOND = 1000;
 
     // The size in segments of the playable area
-    private final int NUM_BLOCKS_WIDE = 40;
-    private int mNumBlocksHigh;
+    private Dimesion MapDimension = new Dimesion(20,20);
+
 
     // Objects for drawing
     private Canvas gameCanvas;
     private SurfaceHolder mSurfaceHolder;
     private Paint mPaint;
-    private DisplayManger display;
-    private GameGrid grid;
     private Context context;
-    private MapBackground gameMap;
+
+    //objects in the gameWorld are stored here
+    private GameWorld currentGame;
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -53,19 +55,14 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void initializeCurrentView(WindowManager displayWindow, Context context) {
         this.context = context;
-        display = new DisplayManger(displayWindow);
+        DisplayManger display = new DisplayManger(displayWindow);
 
-        // Work out how many pixels each block is
-        int blockSize = display.getScreenWidth() / NUM_BLOCKS_WIDE;
-        // How many blocks of the same size will fit into the height
-        mNumBlocksHigh = display.getScreenHeight()/ blockSize;
 
         Bitmap myBitmap = Bitmap.createBitmap(display.getScreenWidth(), display.getScreenHeight(), Bitmap.Config.ARGB_8888);
 
         gameCanvas = new Canvas(myBitmap);
 
-        grid = new GameGrid(10,10, gameCanvas.getWidth(), gameCanvas.getHeight());
-        gameMap = new MapBackground(context, display);
+        currentGame = new GameWorld(context, display, gameCanvas, MapDimension);
 
         drawGame();
     }
@@ -89,19 +86,10 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Get a lock on the gameCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
+
             gameCanvas = mSurfaceHolder.lockCanvas();
 
-            // Fill the screen with a color
-            gameCanvas.drawColor(Color.argb(255, 26, 128, 182));
-
-            // Set the size and color of the mPaint for the text
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
-            mPaint.setTextSize(120);
-
-            gameCanvas.drawBitmap(gameMap.getMap(),0,0, null );
-
-            grid.drawGrid(gameCanvas);
-
+            currentGame.draw(gameCanvas);
 
             // Draw some text while paused
             if(gamePaused){
@@ -116,8 +104,6 @@ public class GameView extends SurfaceView implements Runnable {
                 gameCanvas.drawText("tap to play",
                         200, 500, mPaint);
             }
-
-
             // Unlock the gameCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(gameCanvas);
         }

@@ -3,47 +3,72 @@ package com.example.towerdefencegamephase1;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.DisplayMetrics;
 
-public class MapBackground {
+public class MapBackground extends GameGrid{
 
-    Bitmap map;
+    private Bitmap map;
+    private Path enemyPath;
 
-    public MapBackground(Context context,DisplayManger displayManger){
+    public MapBackground(Context context,DisplayManger displayManger, Canvas canvas, Dimesion mapSize){
+        super(mapSize.getHeight(),mapSize.getWidth(), canvas.getWidth(), canvas.getHeight());
         map = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.map);
+
         map = Bitmap.createScaledBitmap(map,displayManger.getScreenWidth(),displayManger.getScreenHeight(),true);
+        createPath();
+
+
+    }
+
+    private void createPath(){
+
+        enemyPath = new Path();
+        enemyPath.moveTo((float) gridCells[10][0].centerX(),(float) gridCells[10][0].centerY());
+
+        enemyPath.lineTo((float) gridCells[10][3].centerX(),(float) gridCells[10][3].centerY());
+        enemyPath.moveTo((float) gridCells[10][3].centerX(),(float) gridCells[10][3].centerY());
+
+        enemyPath.lineTo((float) gridCells[4][3].centerX(),(float) gridCells[4][3].centerY());
+        enemyPath.moveTo((float) gridCells[4][3].centerX(),(float) gridCells[4][3].centerY());
+
+        enemyPath.lineTo((float) gridCells[4][7].centerX(),(float) gridCells[4][7].centerY());
+        enemyPath.moveTo((float) gridCells[4][7].centerX(),(float) gridCells[4][7].centerY());
+
+        enemyPath.lineTo((float) gridCells[12][7].centerX(),(float) gridCells[12][7].centerY());
+        enemyPath.moveTo((float) gridCells[12][7].centerX(),(float) gridCells[12][7].centerY());
+
+        enemyPath.lineTo((float) gridCells[12][12].centerX(),(float) gridCells[12][12].centerY());
+        enemyPath.moveTo((float) gridCells[12][12].centerX(),(float) gridCells[12][12].centerY());
+
+        enemyPath.lineTo((float) gridCells[8][12].centerX(),(float) gridCells[8][12].centerY());
+        enemyPath.moveTo((float) gridCells[8][12].centerX(),(float) gridCells[8][12].centerY());
+
+        enemyPath.lineTo((float) gridCells[8][19].centerX(),(float) gridCells[8][19].centerY());
+        enemyPath.moveTo((float) gridCells[8][19].centerX(),(float) gridCells[8][19].centerY());
+
 
     }
 
     public Bitmap getMap() {
         return map;
     }
-    private Bitmap getScaledBitMapBaseOnScreenSize(DisplayMetrics metrics){
 
-        Bitmap scaledBitmap=null;
-        try {
+    public void draw(Canvas gameCanvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5f);
+        gameCanvas.drawBitmap(map,0,0, null );
+        drawGrid(gameCanvas);
 
-
-            int width = map.getWidth();
-            int height = map.getHeight();
-
-            float scaleWidth = metrics.scaledDensity;
-            float scaleHeight = metrics.scaledDensity;
-
-            // create a matrix for the manipulation
-            Matrix matrix = new Matrix();
-            // resize the bit map
-            matrix.postScale(scaleWidth, scaleHeight);
-
-            // recreate the new Bitmap
-            scaledBitmap = Bitmap.createBitmap(map, 0, 0, width, height, matrix, true);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return scaledBitmap;
+        gameCanvas.drawPath(enemyPath, paint );
     }
+
 }

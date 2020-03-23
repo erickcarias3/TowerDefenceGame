@@ -8,34 +8,26 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 
 public class GameGrid {
-    private int numColumns, numRows;
-    private int screenWidth, screenHeight;
-    private int gridWidth, gridHeight;
-    private int cellWidth, cellHeight;
+
+    private Dimesion gridDimensions;
+    private Dimesion blockSize;
     private Paint paint = new Paint();
-    private Rect[][] cells;
+    protected Rect[][] gridCells;
     private Rect touchedCell;
     private Rect touchedTool;
     private ArrayList<Rect> selectedTools = new ArrayList<>();
 
 
     public GameGrid(int numColumns, int numRows, int screenWidth, int screenHeight) {
-        this.numColumns = numColumns;
-        this.numRows = numRows;
-        cells = new Rect[numColumns][numRows];
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
 
-        gridHeight = screenHeight/ numRows;
-        gridWidth = screenWidth / numColumns;
-
+        gridDimensions = new Dimesion(numRows,numColumns);
+        gridCells = new Rect[numColumns][numRows];
+        blockSize = new Dimesion(screenWidth / numColumns, screenHeight/ numRows);
         createGrid();
-        cellWidth = cells[0][0].width();
-        cellHeight = cells[0][0].width();
 
     }
 
-    //This function draws all the grid cells in the 2D array
+    //This function draws all the grid gridCells in the 2D array
     //it traverses each cell 1 by 1 and draws its borders individually
     //It also checks if there is a touched cell that needs to be drawn
     public void drawGrid(Canvas canvas){
@@ -44,9 +36,9 @@ public class GameGrid {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1f);
 
-        for(int i = 0; i < numColumns; i++){
-            for(int k = 0; k < numRows; k++){
-                canvas.drawRect(cells[i][k],paint);
+        for(int i = 0; i < gridDimensions.getHeight(); i++){
+            for(int k = 0; k < gridDimensions.getWidth(); k++){
+                canvas.drawRect(gridCells[i][k],paint);
             }
         }
 
@@ -73,15 +65,15 @@ public class GameGrid {
     public void createGrid(){
         int x = 0;
         int y = 0;
-        for(int i = 0; i < numColumns; i++){
-            for(int k = 0; k < numRows; k++){
-                cells[i][k] = new Rect(x,y,x+gridWidth,y+gridHeight);
-                x = gridWidth + x + 1 ;
-                if(k == numRows - 1){
+        for(int i = 0; i < gridDimensions.getHeight(); i++){
+            for(int k = 0; k < gridDimensions.getWidth(); k++){
+                gridCells[i][k] = new Rect(x,y,x+blockSize.getWidth(),y+blockSize.getHeight());
+                x = blockSize.getWidth() + x + 1 ;
+                if(k == gridDimensions.getWidth() - 1){
                     x = 0;
                 }
             }
-            y = gridHeight + y + 1 ;
+            y = blockSize.getHeight() + y + 1 ;
         }
     }
 
@@ -90,10 +82,10 @@ public class GameGrid {
     public Rect checkGrid(float touchedX, float touchedY){
 
 
-        for(int i = 0; i < numColumns; i++) {
-            for (int k = 0; k < numRows; k++) {
-                if (cells[i][k].contains((int) touchedX , (int) touchedY )){
-                    touchedCell = cells[i][k];
+        for(int i = 0; i < gridDimensions.getHeight(); i++) {
+            for (int k = 0; k < gridDimensions.getWidth(); k++) {
+                if (gridCells[i][k].contains((int) touchedX , (int) touchedY )){
+                    touchedCell = gridCells[i][k];
                     System.out.println("----Cell:" + "[" + i + "]" +"[" + k + "]" + "Touched ----");
                     break;
                 }
@@ -146,7 +138,7 @@ public class GameGrid {
     }
 
     public int getGridWidth() {
-        return this.gridWidth;
+        return this.gridDimensions.getWidth();
     }
 
     public ArrayList<Rect> getSelectedGridSquares(){
@@ -154,15 +146,15 @@ public class GameGrid {
     }
 
     public int getGridHeight() {
-        return this.gridHeight;
+        return this.gridDimensions.getHeight();
     }
 
     public int getCellHeight() {
-        return cellHeight;
+        return blockSize.getHeight();
     }
 
     public int getCellWidth() {
-        return cellWidth;
+        return blockSize.getWidth();
     }
 
 
