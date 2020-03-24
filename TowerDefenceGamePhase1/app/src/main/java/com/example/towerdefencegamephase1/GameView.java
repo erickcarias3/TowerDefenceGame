@@ -3,6 +3,7 @@ package com.example.towerdefencegamephase1;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -29,12 +30,20 @@ public class GameView extends SurfaceView implements Runnable {
     //context which the game will run
     private Context context;
 
+    // The sound engine
+    private SoundEngine mSoundEngine;
+
     //objects in the gameWorld are stored here
     private GameWorld currentGame;
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
 
+        // Chooses the appropriate Sound Engine strategy.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mSoundEngine = new SoundEngine(new PostLollipopSoundEngine(context));
+        else
+            mSoundEngine = new SoundEngine(new PreLollipopSoundEngine(context));
     }
 
     public void initializeCurrentView(WindowManager displayWindow, Context context) {
