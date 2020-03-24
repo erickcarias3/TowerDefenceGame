@@ -25,7 +25,6 @@ public class GameView extends SurfaceView implements Runnable {
     // There are 1000 milliseconds in a second
     final long MILLIS_PER_SECOND = 1000;
 
-
     //context which the game will run
     private Context context;
 
