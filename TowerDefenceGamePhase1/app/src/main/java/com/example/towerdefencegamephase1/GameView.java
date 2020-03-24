@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -32,6 +33,9 @@ public class GameView extends SurfaceView implements Runnable {
     // The size in segments of the playable area
     private Dimesion MapDimension = new Dimesion(20,20);
 
+    // The sound engine for the game.
+    private SoundEngine mSoundEngine;
+
 
     // Objects for drawing
     private Canvas gameCanvas;
@@ -50,6 +54,11 @@ public class GameView extends SurfaceView implements Runnable {
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
 
+        // Initialize the SoundEngine based on the version of OS.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mSoundEngine = new SoundEngine(new PostLollipopSoundEngine(context));
+        else
+            mSoundEngine = new SoundEngine(new PreLollipopSoundEngine(context));
 
     }
 
