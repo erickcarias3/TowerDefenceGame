@@ -30,9 +30,9 @@ public class MapBackground extends GameGrid{
     private void createPath(){
 
         enemyPath = new Path();
-        enemyPath.moveTo((float) gridCells[10][0].centerX(),(float) gridCells[10][0].centerY());
+        enemyPath.moveTo((float) gridCells[10][0].centerX() - getCellWidth()/2,(float) gridCells[10][0].centerY());
 
-        enemyPath.lineTo((float) gridCells[10][3].centerX(),(float) gridCells[10][3].centerY());
+        enemyPath.lineTo((float) gridCells[10][3].centerX(), (float) gridCells[10][3].centerY());
         enemyPath.moveTo((float) gridCells[10][3].centerX(),(float) gridCells[10][3].centerY());
 
         enemyPath.lineTo((float) gridCells[4][3].centerX(),(float) gridCells[4][3].centerY());
@@ -50,10 +50,24 @@ public class MapBackground extends GameGrid{
         enemyPath.lineTo((float) gridCells[8][12].centerX(),(float) gridCells[8][12].centerY());
         enemyPath.moveTo((float) gridCells[8][12].centerX(),(float) gridCells[8][12].centerY());
 
-        enemyPath.lineTo((float) gridCells[8][19].centerX(),(float) gridCells[8][19].centerY());
-        enemyPath.moveTo((float) gridCells[8][19].centerX(),(float) gridCells[8][19].centerY());
+        enemyPath.lineTo((float) gridCells[8][19].centerX() + getCellWidth()/2,(float) gridCells[8][19].centerY());
+        enemyPath.moveTo((float) gridCells[8][19].centerX() + getCellWidth()/2,(float) gridCells[8][19].centerY());
 
 
+
+    }
+
+    public Position followPath(Position startingPostion){
+        if(startingPostion.x < 0 || startingPostion.y < 0) {
+            startingPostion.x = (float) gridCells[10][0].centerX() - getCellWidth()/2 + 1;
+            startingPostion.y = (float) gridCells[10][0].centerY();
+            return startingPostion;
+        }
+        //else if(startingPostion.x  )
+
+
+
+        return startingPostion;
     }
 
     public Bitmap getMap() {

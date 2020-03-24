@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
 public class GameWorld {
+
+
     private MapBackground gameMap;
     private Enemy testEnemy;
 
@@ -27,8 +29,8 @@ public class GameWorld {
         viewSurfaceHolder = surfaceHolder;
         mapDimensions = new Dimesion(20,20);
         mPaint = new Paint();
-
         gameMap = new MapBackground(context, display, viewCanvas, mapDimensions);
+        createEnemy(context);
 
     }
 
@@ -48,21 +50,28 @@ public class GameWorld {
 
             // Draw some text while paused
             if(gamePaused){
-
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(150);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-                viewCanvas.drawText("tap to play",
-                        200, 500, mPaint);
+                createSimpleHUD();
             }
+            else{
+
+            }
+
             // Unlock the gameCanvas and reveal the graphics for this frame
             viewSurfaceHolder.unlockCanvasAndPost(viewCanvas);
         }
 
+    }
+
+    public void createSimpleHUD(){
+        // Set the size and color of the mPaint for the text
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        mPaint.setTextSize(150);
+
+        // Draw the message
+        // We will give this an international upgrade soon
+        //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+        viewCanvas.drawText("tap to play",
+                200, 500, mPaint);
     }
 
     public void createEnemy(Context context){
@@ -70,19 +79,24 @@ public class GameWorld {
         int enemyHeight = gameMap.getCellHeight();
         int enemyWidth = gameMap.getCellWidth();
 
-        Bitmap newEnemy = BitmapFactory
+        Bitmap newEnemyBitmap = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.map);
 
-        newEnemy = Bitmap.createScaledBitmap(newEnemy,enemyHeight,enemyWidth,true);
+        newEnemyBitmap = Bitmap.createScaledBitmap(newEnemyBitmap,enemyHeight,enemyWidth,true);
 
-        //testEnemy = newEnemy();
+        testEnemy = new Enemy(-10,-10, newEnemyBitmap);
 
     }
 
     public void update(){
-
+        moveEnemy();
     }
 
+    public void moveEnemy(){
+
+        testEnemy.setPosition(gameMap.followPath(testEnemy.getLocationOnMap()));
+
+    }
 
 }

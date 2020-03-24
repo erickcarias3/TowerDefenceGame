@@ -33,7 +33,7 @@ public class GameView extends SurfaceView implements Runnable {
     private SoundEngine mSoundEngine;
 
     //objects in the gameWorld are stored here
-    private GameWorld currentGame;
+    private GameWorld currentGameWorld;
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -53,7 +53,7 @@ public class GameView extends SurfaceView implements Runnable {
         Bitmap myBitmap = Bitmap.createBitmap(display.getScreenWidth(), display.getScreenHeight(), Bitmap.Config.ARGB_8888);
         Canvas bitmapGameCanvas = new Canvas(myBitmap);
 
-        currentGame = new GameWorld(context, display, bitmapGameCanvas, getHolder() );
+        currentGameWorld = new GameWorld(context, display, bitmapGameCanvas, getHolder() );
 
         drawGame();
     }
@@ -74,7 +74,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawGame(){
-        currentGame.draw(gamePaused);
+        currentGameWorld.draw(gamePaused);
     }
 
     // Check to see if it is time for an update
@@ -97,7 +97,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update(){
-
+        currentGameWorld.update();
     }
 
     @Override

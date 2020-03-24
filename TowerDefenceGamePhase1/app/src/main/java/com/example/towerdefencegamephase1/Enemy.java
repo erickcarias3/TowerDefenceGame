@@ -1,27 +1,26 @@
 package com.example.towerdefencegamephase1;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
-public class Enemy {
-
-    protected Position locationOnMap;
-    Bitmap enemyBitmap;
+public class Enemy extends GameObject {
 
     public Enemy(float startingX, float startingY, Bitmap enemyBitmap){
+        locationOnMap = new Position();
         locationOnMap.x = startingX;
         locationOnMap.y = startingY;
-        this.enemyBitmap = enemyBitmap;
+        this.objectBitmap = enemyBitmap;
     }
 
     public void updatePosition(float x, float y){
-
         locationOnMap.x = x;
         locationOnMap.y = y;
-
+    }
+    public void setPosition(Position newPosition){
+        this.locationOnMap = newPosition;
     }
 
-    public void draw(Canvas canvas){
-        canvas.drawBitmap(enemyBitmap,locationOnMap.x,locationOnMap.y,null);
+    public Position getLocationOnMap(){
+        return locationOnMap;
     }
+
 }
