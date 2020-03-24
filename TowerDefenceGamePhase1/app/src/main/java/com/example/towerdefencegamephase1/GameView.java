@@ -2,15 +2,9 @@ package com.example.towerdefencegamephase1;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
@@ -21,6 +15,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread mThread = null;
     // Control pausing between updates
     private long mNextFrameTime;
+
     // Is the game currently playing and or paused?
     private volatile boolean gamePlaying = false;
     private volatile boolean gamePaused = true;
@@ -30,17 +25,8 @@ public class GameView extends SurfaceView implements Runnable {
     // There are 1000 milliseconds in a second
     final long MILLIS_PER_SECOND = 1000;
 
-    // The size in segments of the playable area
-    private Dimesion MapDimension = new Dimesion(20,20);
 
-    // The sound engine for the game.
-    private SoundEngine mSoundEngine;
-
-
-    // Objects for drawing
-    private Canvas gameCanvas;
-    private SurfaceHolder mSurfaceHolder;
-    private Paint mPaint;
+    //context which the game will run
     private Context context;
 
     //objects in the gameWorld are stored here
@@ -49,29 +35,17 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
 
-        // Initialize the drawing objects
-        gameCanvas = new Canvas();
-        mSurfaceHolder = getHolder();
-        mPaint = new Paint();
-
-        // Initialize the SoundEngine based on the version of OS.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            mSoundEngine = new SoundEngine(new PostLollipopSoundEngine(context));
-        else
-            mSoundEngine = new SoundEngine(new PreLollipopSoundEngine(context));
-
     }
 
     public void initializeCurrentView(WindowManager displayWindow, Context context) {
         this.context = context;
         DisplayManger display = new DisplayManger(displayWindow);
 
-
+        //create a canvas using a bitmap
         Bitmap myBitmap = Bitmap.createBitmap(display.getScreenWidth(), display.getScreenHeight(), Bitmap.Config.ARGB_8888);
+        Canvas bitmapGameCanvas = new Canvas(myBitmap);
 
-        gameCanvas = new Canvas(myBitmap);
-
-        currentGame = new GameWorld(context, display, gameCanvas, MapDimension);
+        currentGame = new GameWorld(context, display, bitmapGameCanvas, getHolder() );
 
         drawGame();
     }
@@ -92,31 +66,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawGame(){
-
-        // Get a lock on the gameCanvas
-        if (mSurfaceHolder.getSurface().isValid()) {
-
-            gameCanvas = mSurfaceHolder.lockCanvas();
-
-            currentGame.draw(gameCanvas);
-
-            // Draw some text while paused
-            if(gamePaused){
-
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(150);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-                gameCanvas.drawText("tap to play",
-                        200, 500, mPaint);
-            }
-            // Unlock the gameCanvas and reveal the graphics for this frame
-            mSurfaceHolder.unlockCanvasAndPost(gameCanvas);
-        }
-
+        currentGame.draw(gamePaused);
     }
 
     // Check to see if it is time for an update
