@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 
 public abstract class GameObject {
     Bitmap objectBitmap;
-    protected Position locationOnMap;
+    protected Position location;
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(objectBitmap,locationOnMap.x,locationOnMap.y,null);
+        canvas.drawBitmap(objectBitmap, location.x, location.y,null);
     }
 }

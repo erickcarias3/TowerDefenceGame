@@ -53,7 +53,7 @@ public class GameWorld {
                 createSimpleHUD();
             }
             else{
-
+                testEnemy.draw(viewCanvas);
             }
 
             // Unlock the gameCanvas and reveal the graphics for this frame
@@ -94,9 +94,8 @@ public class GameWorld {
     }
 
     public void moveEnemy(){
-
-        testEnemy.setPosition(gameMap.followPath(testEnemy.getLocationOnMap()));
-
+        gameMap.followPath(testEnemy);
+        testEnemy.move();
     }
 
 }
