@@ -81,7 +81,7 @@ public class GameWorld {
 
         Bitmap newEnemyBitmap = BitmapFactory
                 .decodeResource(context.getResources(),
-                        R.drawable.map);
+                        R.drawable.skeleton);
 
         newEnemyBitmap = Bitmap.createScaledBitmap(newEnemyBitmap,enemyHeight,enemyWidth,true);
 
@@ -95,7 +95,7 @@ public class GameWorld {
 
     public void moveEnemy(){
         gameMap.followPath(testEnemy);
-        testEnemy.move();
+        //testEnemy.move();
     }
 
 }

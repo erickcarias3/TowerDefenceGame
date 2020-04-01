@@ -1,47 +1,109 @@
 package com.example.towerdefencegamephase1;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import android.graphics.Path;
 import android.graphics.Rect;
 
 public class RoadMap {
     private Path roadPath;
-    private Position start = new Position();
-    private LinkedHashMap<Position,Heading> turningPoints;
+    //private Position start = new Position();
+    private int numberOfPoints = 8;
+    private TurningPoint[] mapPoints;
 
     public RoadMap(Rect[][] mapCells, int cellWidth){
-        turningPoints = new LinkedHashMap();
+       // linkedHashmap = new LinkedHashMap();
+        mapPoints = new TurningPoint[numberOfPoints];
 
         createPath(mapCells, cellWidth);
 
 
     }
 
-    public void addTurningPoint(Position position, Heading heading){
-        turningPoints.put(position, heading);
+    private void addTurningPoint(int positionInArray, Position position, Heading heading){
+        mapPoints[positionInArray] = new TurningPoint(position, heading);
+        addToPath(positionInArray, position);
     }
 
-    public void addToPath(float x, float y){
-
+    private void addToPath(int positionInRoadMap, Position position){
+        if(positionInRoadMap == 0){
+            roadPath.moveTo(position.x,position.y);
+        }
+        else{
+            roadPath.lineTo(position.x, position.y);
+            roadPath.moveTo(position.x,position.y);
+        }
     }
+
 
     public Path getPath() {
         return roadPath;
     }
 
     public Position getStart(){
-        return start;
+        return mapPoints[0];
     }
 
-    public Heading checkTurningPoints(Position position, Heading direction){
+    public int follow(Enemy enemy){
+        return nextPosition(enemy.getLocationOnMap() , enemy.getSpeed(), enemy.getNextTurn());
+    }
 
-        if(turningPoints.containsKey(position)){
-            return turningPoints.get(position);
+    public int nextPosition(Position location, int speed, int nextPointOnMap){
+        Heading direction = mapPoints[nextPointOnMap - 1].getTurningDirection();
+
+        switch (direction) {
+            case UP:
+                if(location.y - speed <= mapPoints[nextPointOnMap].y){
+                    location.x = mapPoints[nextPointOnMap].x;
+                    location.y = mapPoints[nextPointOnMap].y;
+                    nextPointOnMap += 1;
+                }
+                else{
+                    location.y-= speed;
+                }
+                break;
+
+            case RIGHT:
+                if(location.x + speed >= mapPoints[nextPointOnMap].x){
+                    location.x = mapPoints[nextPointOnMap].x;
+                    location.y = mapPoints[nextPointOnMap].y;
+                    nextPointOnMap += 1;
+                }
+                else{
+                    location.x+= speed;
+                }
+                break;
+
+            case DOWN:
+                if(location.y + speed >= mapPoints[nextPointOnMap].y){
+                    location.x = mapPoints[nextPointOnMap].x;
+                    location.y = mapPoints[nextPointOnMap].y;
+                    nextPointOnMap += 1;
+                }
+                else{
+                    location.y+= speed;
+
+                }
+                break;
+
+            case LEFT:
+                if(location.x - speed <= mapPoints[nextPointOnMap].x){
+                    location.x = mapPoints[nextPointOnMap].x;
+                    location.y = mapPoints[nextPointOnMap].y;
+                    nextPointOnMap += 1;
+                }
+                else{
+                    location.x-= speed;
+                }
+                break;
         }
-        else {
-            return direction;
+
+        if(nextPointOnMap == mapPoints.length  && location.x >= mapPoints[mapPoints.length - 1].x){
+            location.x = getStart().x;
+            location.y = getStart().y;
+            nextPointOnMap = 1;
         }
+
+        return nextPointOnMap;
+
     }
 
     /*
@@ -50,66 +112,60 @@ public class RoadMap {
          the starting point is the leftmost point while the end is the rightmost point
       */
     private void createPath(Rect[][] gridCells, int cellWidth){
+        int positionInArray = 0;
 
         roadPath = new Path();
         Position position = new Position();
 
         //starting point (Start of path)
-        start.x = (float) gridCells[10][0].centerX() - cellWidth/2;
-        start.y = (float) gridCells[10][0].centerY();
-        addTurningPoint(position, Heading.RIGHT);
-        roadPath.moveTo(start.x,start.y);
+        position.x = (float) gridCells[10][0].centerX() - cellWidth/2;
+        position.y = (float) gridCells[10][0].centerY();
+        addTurningPoint(positionInArray, position, Heading.RIGHT);
+        positionInArray++;
 
         //first up
         position.x = (float) gridCells[10][3].centerX();
         position.y = (float) gridCells[10][3].centerY();
-        addTurningPoint(position, Heading.UP);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.UP);
+        positionInArray++;
 
         //first right turn
         position.x = (float) gridCells[4][3].centerX();
         position.y = (float) gridCells[4][3].centerY();
-        addTurningPoint(position, Heading.RIGHT);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.RIGHT);
+        positionInArray++;
 
 
         //second down turn
         position.x = (float) gridCells[4][7].centerX();
         position.y = (float) gridCells[4][7].centerY();
-        addTurningPoint(position, Heading.DOWN);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.DOWN);
+        positionInArray++;
 
 
         //third right turn
         position.x = (float) gridCells[12][7].centerX();
         position.y = (float) gridCells[12][7].centerY();
-        addTurningPoint(position, Heading.RIGHT);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.RIGHT);
+        positionInArray++;
 
         //third left turn
         position.x = (float) gridCells[12][12].centerX();
         position.y = (float) gridCells[12][12].centerY();
-        addTurningPoint(position, Heading.UP);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.UP);
+        positionInArray++;
 
         //third right turn
         position.x = (float) gridCells[8][12].centerX();
         position.y = (float) gridCells[8][12].centerY();
-        addTurningPoint(position, Heading.RIGHT);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.RIGHT);
+        positionInArray++;
 
         //ending point(End of path)
         position.x = (float) gridCells[8][19].centerX() + cellWidth/2;
         position.y = (float) gridCells[8][19].centerY();
-        addTurningPoint(position, Heading.RIGHT);
-        roadPath.lineTo(position.x, position.y);
-        roadPath.moveTo(position.x,position.y);
+        addTurningPoint(positionInArray, position, Heading.RIGHT);
+
 
     }
 

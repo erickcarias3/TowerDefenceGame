@@ -26,16 +26,17 @@ public class MapBackground extends GameGrid{
     }
 
     public void followPath(Enemy enemy){
+
         if(enemy.getLocationOnMap().x < 0 || enemy.getLocationOnMap().y < 0){
-            enemy.setDirection(Heading.RIGHT);
             enemy.setPosition(enemyPath.getStart());
         }
         else{
-            Heading direction = enemyPath.checkTurningPoints(enemy.getLocationOnMap(),enemy.getDirection());
-            enemy.setDirection(direction);
+            enemy.setNextTurn(enemyPath.follow(enemy));
         }
 
     }
+
+
 
     public Bitmap getMap() {
         return map;

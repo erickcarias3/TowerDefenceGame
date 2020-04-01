@@ -8,6 +8,8 @@ public abstract class GameObject {
     protected Position location;
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(objectBitmap, location.x, location.y,null);
+        canvas.drawBitmap(objectBitmap, location.x - ((float) objectBitmap.getWidth()/2), (int) location.y - ((float) objectBitmap.getHeight()/2),null);
     }
+
+
 }

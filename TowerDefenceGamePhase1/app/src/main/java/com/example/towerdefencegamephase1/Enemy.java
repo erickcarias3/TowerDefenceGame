@@ -6,54 +6,37 @@ import android.graphics.Canvas;
 
 public class Enemy extends GameObject {
 
-    private Heading direction;
+    private int nextTurn = 1;
+    private int speed = 10;
 
     public Enemy(float startingX, float startingY, Bitmap enemyBitmap){
         location = new Position();
         location.x = startingX;
         location.y = startingY;
         this.objectBitmap = enemyBitmap;
-        direction = Heading.RIGHT;
     }
 
-    public void move(){
-        switch (direction) {
-            case UP:
-                location.y-= 10;
-                break;
 
-            case RIGHT:
-                location.x+= 10;
-                break;
-
-            case DOWN:
-                location.y+= 10;
-                break;
-
-            case LEFT:
-                location.x-= 10;
-                break;
-        }
+    public int getNextTurn(){
+        return nextTurn;
     }
 
-    public void setDirection(Heading heading){
-        this.direction = heading;
+    public void setNextTurn(int nextTurn){
+        this.nextTurn = nextTurn;
     }
 
-    public Heading getDirection() {
-        return direction;
+    public int getSpeed() {
+        return speed;
     }
 
     public void setPosition(Position newPosition){
-        this.location = newPosition;
+        this.location.x = newPosition.x;
+        this.location.y = newPosition.y;
     }
 
     public Position getLocationOnMap(){
         return location;
     }
 
-    public void drawSelf(Canvas canvas){
-        canvas.drawBitmap(objectBitmap,location.x,location.y, null );
-    }
 
 }
