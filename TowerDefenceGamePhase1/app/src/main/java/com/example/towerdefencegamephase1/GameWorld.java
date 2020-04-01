@@ -22,6 +22,9 @@ public class GameWorld {
     // The size in segments of the playable area
     private Dimesion mapDimensions;
 
+    // The Heads up Display
+    private Hud mHud;
+
 
     public GameWorld(Context context, DisplayManger display, Canvas canvas, SurfaceHolder surfaceHolder){
        //initialize variables
@@ -31,6 +34,7 @@ public class GameWorld {
         mPaint = new Paint();
         gameMap = new MapBackground(context, display, viewCanvas, mapDimensions);
         createEnemy(context);
+        mHud = new Hud();
 
     }
 
@@ -45,6 +49,8 @@ public class GameWorld {
 
             //draw the background map and grid
             gameMap.draw(viewCanvas);
+
+            mHud.draw(viewCanvas, mPaint);
 
             //draw the background map and grid
 
