@@ -17,7 +17,7 @@ public class Hud {
 
     //
     private int mLives = 10;
-    private int mScore = 0;
+    private int mGold = 0;
 
     static int TOWER_ONE = 0;
     static int TOWER_TWO = 1;
@@ -60,7 +60,7 @@ public class Hud {
         paint.setColor(Color.argb(255, 0, 0, 0));
         paint.setTextSize(mTextFormatting);
 
-        canvas.drawText("Score: " + mScore,
+        canvas.drawText("Gold: " + mGold,
                 mTextFormatting / 2, mTextFormatting, paint);
 
         canvas.drawText("Lives: " + mLives,
@@ -80,9 +80,23 @@ public class Hud {
         paint.setColor(Color.argb(255, 255, 255, 255));
     }
 
+    public void createSimpleHud(Canvas canvas, Paint paint) {
+        paint.setColor(Color.argb(255, 255, 255, 255));
+        paint.setTextSize(mTextFormatting);
+
+        // Draw the message
+        // We will give this an international upgrade soon
+        //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+        canvas.drawText("Tap to Play",
+                mScreenWidth / 2, mScreenHeight / 2, paint);
+    }
+
     public void updateLives() {mLives--;}
 
     public void updateScore(int pointValue) {
-        mScore += pointValue;
+        mGold += pointValue;
     }
+
+    public int getScreenWidth() {return mScreenWidth;}
+
 }

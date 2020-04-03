@@ -33,10 +33,7 @@ public class MapBackground extends GameGrid{
         else{
             enemy.setNextTurn(enemyPath.follow(enemy));
         }
-
     }
-
-
 
     public Bitmap getMap() {
         return map;
@@ -52,7 +49,4 @@ public class MapBackground extends GameGrid{
 
         gameCanvas.drawPath(enemyPath.getPath(), paint );
     }
-
-
-
 }

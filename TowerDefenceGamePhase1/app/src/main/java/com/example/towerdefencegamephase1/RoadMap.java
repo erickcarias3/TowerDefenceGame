@@ -14,8 +14,6 @@ public class RoadMap {
         mapPoints = new TurningPoint[numberOfPoints];
 
         createPath(mapCells, cellWidth);
-
-
     }
 
     private void addTurningPoint(int positionInArray, Position position, Heading heading){
