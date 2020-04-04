@@ -56,7 +56,7 @@ public class GameWorld {
 
             // Draw some text while paused
             if(gamePaused){
-                createSimpleHUD();
+                mHud.createSimpleHud(viewCanvas, mPaint);
             }
             else{
                 testEnemy.draw(viewCanvas);
@@ -68,7 +68,7 @@ public class GameWorld {
 
     }
 
-    public void createSimpleHUD(){
+    /*public void createSimpleHUD(){
         // Set the size and color of the mPaint for the text
         mPaint.setColor(Color.argb(255, 255, 255, 255));
         mPaint.setTextSize(150);
@@ -76,9 +76,11 @@ public class GameWorld {
         // Draw the message
         // We will give this an international upgrade soon
         //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-        viewCanvas.drawText("tap to play",
+        viewCanvas.drawText("Tap to Play",
                 200, 500, mPaint);
     }
+
+     */
 
     public void createEnemy(Context context){
 
@@ -96,7 +98,10 @@ public class GameWorld {
     }
 
     public void update(){
+        if( testEnemy.location.x >= mHud.getScreenWidth())
+            mHud.updateLives();
         moveEnemy();
+
     }
 
     public void moveEnemy(){
