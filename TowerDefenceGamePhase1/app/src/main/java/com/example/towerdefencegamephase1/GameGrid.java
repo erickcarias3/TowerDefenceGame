@@ -31,7 +31,7 @@ public class GameGrid {
     //it traverses each cell 1 by 1 and draws its borders individually
     //It also checks if there is a touched cell that needs to be drawn
     public void drawGrid(Canvas canvas){
-        //canvas.drawColor(Color.BLACK);
+
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1f);

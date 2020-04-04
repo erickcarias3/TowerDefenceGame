@@ -11,7 +11,7 @@ import android.view.SurfaceHolder;
 public class GameWorld {
 
 
-    private MapBackground gameMap;
+    private GameMap gameMap;
     private Enemy testEnemy;
 
     // Objects for drawing
@@ -32,7 +32,7 @@ public class GameWorld {
         viewSurfaceHolder = surfaceHolder;
         mapDimensions = new Dimesion(20,20);
         mPaint = new Paint();
-        gameMap = new MapBackground(context, display, viewCanvas, mapDimensions);
+        gameMap = new GameMap(context, display, viewCanvas, mapDimensions);
         createEnemy(context);
         mHud = new Hud();
 

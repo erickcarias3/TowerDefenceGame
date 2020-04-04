@@ -3,19 +3,16 @@ package com.example.towerdefencegamephase1;
 import android.graphics.Path;
 import android.graphics.Rect;
 
-public class RoadMap {
+public class GamePath {
+
     private Path roadPath;
-    //private Position start = new Position();
     private int numberOfPoints = 8;
     private TurningPoint[] mapPoints;
 
-    public RoadMap(Rect[][] mapCells, int cellWidth){
-       // linkedHashmap = new LinkedHashMap();
+    public GamePath(Rect[][] mapCells, int cellWidth){
         mapPoints = new TurningPoint[numberOfPoints];
 
         createPath(mapCells, cellWidth);
-
-
     }
 
     private void addTurningPoint(int positionInArray, Position position, Heading heading){
@@ -32,7 +29,6 @@ public class RoadMap {
             roadPath.moveTo(position.x,position.y);
         }
     }
-
 
     public Path getPath() {
         return roadPath;
