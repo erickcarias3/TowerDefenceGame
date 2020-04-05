@@ -55,11 +55,11 @@ public class GameWorld {
 
             mHud.draw(viewCanvas, mPaint);
 
-            //draw the background map and grid
+            testEnemy.draw(viewCanvas);
+
+            drawTowers();
 
             // Draw some text while paused
-             testEnemy.draw(viewCanvas);
-
              if(gamePaused){
                  displayPausedMessage();
              }
@@ -99,7 +99,7 @@ public class GameWorld {
 
     }
 
-    public void createTower(Context context){
+    public void createTower(Context context, Position startingPosition){
 
         int towerHeight = gameMap.getCellHeight() * 2 ;
         int towerWidth = gameMap.getCellWidth();
@@ -110,8 +110,24 @@ public class GameWorld {
 
         newTowerBitmap = Bitmap.createScaledBitmap(newTowerBitmap,towerHeight,towerWidth,true);
 
+        startingPosition = translatesToGridCords(startingPosition.x, startingPosition.y);
+
+        testTower = new Tower(startingPosition.x,startingPosition.y, newTowerBitmap);
 
 
+    }
+
+    public void updateCreatedTower(Position updatedPosition){
+        testTower.setPosition(updatedPosition);
+    }
+
+    public void drawTowers(){
+        try{
+            testTower.draw(viewCanvas);
+        }
+        catch(NullPointerException o){
+            return;
+        }
     }
 
     public Position translatesToGridCords(float x, float y){
@@ -125,8 +141,9 @@ public class GameWorld {
         return bitmapCoordinates;
     }
 
-    public void update(){
-        if( testEnemy.location.x >= mHud.getScreenWidth())
+    public void update(boolean creatingDefences){
+
+        if (testEnemy.location.x >= mHud.getScreenWidth())
             mHud.updateLives();
         moveEnemy();
 

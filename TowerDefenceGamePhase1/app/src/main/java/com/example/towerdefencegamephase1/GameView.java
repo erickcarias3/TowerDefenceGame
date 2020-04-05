@@ -65,7 +65,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (gamePlaying) {
-            if(!gamePaused | drawingTower) {
+            if(!gamePaused ) {
                 // Update 10 times a second
                 if (updateRequired()) {
                     update();
@@ -100,22 +100,26 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update(){
-        currentGameWorld.update();
+        currentGameWorld.update(drawingTower);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (gamePaused) {
-
-
-                    // Don't want to process snake direction for this tap
+            case MotionEvent.ACTION_DOWN | MotionEvent.ACTION_MOVE:
+                if (gamePaused & drawingTower) {
+                    Position eventPosition = new Position(motionEvent.getRawX() , motionEvent.getRawY());
+                    currentGameWorld.updateCreatedTower(eventPosition);
                     return true;
                 }
-
                 break;
+            case MotionEvent.ACTION_UP:
+                if(drawingTower){
+                    drawingTower = false;
+                }
+                break;
+
 
             default:
                 break;
@@ -126,10 +130,12 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     public void addTowerButtonLogic(MotionEvent event){
-        if(!drawingTower){
+        if(gamePaused){
             drawingTower = true;
+            Position eventPosition = new Position(event.getRawX() , event.getRawY());
+            currentGameWorld.createTower(context,eventPosition);
+            this.onTouchEvent(event);
         }
-
     }
 
     public void toggleGame(){
