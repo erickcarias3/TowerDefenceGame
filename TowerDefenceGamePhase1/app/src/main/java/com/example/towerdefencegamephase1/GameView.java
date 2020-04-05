@@ -68,13 +68,13 @@ public class GameView extends SurfaceView implements Runnable {
                     update();
                 }
             }
-
             drawGame();
         }
     }
 
     private void drawGame(){
         currentGameWorld.draw(gamePaused);
+
     }
 
     // Check to see if it is time for an update
@@ -103,7 +103,6 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
-        gamePaused = !gamePaused;
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (gamePaused) {
@@ -122,14 +121,20 @@ public class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+    public void toggleGame(){
+        gamePaused = !gamePaused;
+    }
+
     // Stop the thread
     public void pause() {
-        gamePlaying = false;
+
         try {
             mThread.join();
         } catch (InterruptedException e) {
             // Error
         }
+
+
     }
 
 

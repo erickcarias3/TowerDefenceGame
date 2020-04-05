@@ -38,7 +38,7 @@ public class GameWorld {
 
     }
 
-    public void draw(boolean gamePaused){
+    public void draw(Boolean gamePaused){
         // Get a lock on the gameCanvas
         if (viewSurfaceHolder.getSurface().isValid()) {
 
@@ -55,12 +55,11 @@ public class GameWorld {
             //draw the background map and grid
 
             // Draw some text while paused
-            if(gamePaused){
-                mHud.createSimpleHud(viewCanvas, mPaint);
-            }
-            else{
-                testEnemy.draw(viewCanvas);
-            }
+             testEnemy.draw(viewCanvas);
+
+             if(gamePaused){
+                 displayPausedMessage();
+             }
 
             // Unlock the gameCanvas and reveal the graphics for this frame
             viewSurfaceHolder.unlockCanvasAndPost(viewCanvas);
@@ -106,7 +105,9 @@ public class GameWorld {
 
     public void moveEnemy(){
         gameMap.followPath(testEnemy);
-        //testEnemy.move();
     }
 
+    public void displayPausedMessage(){
+        mHud.createPausedMessage(viewCanvas, mPaint);
+    }
 }

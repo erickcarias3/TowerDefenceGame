@@ -80,14 +80,15 @@ public class Hud {
         paint.setColor(Color.argb(255, 255, 255, 255));
     }
 
-    public void createSimpleHud(Canvas canvas, Paint paint) {
+    public void createPausedMessage(Canvas canvas, Paint paint) {
+
         paint.setColor(Color.argb(255, 255, 255, 255));
         paint.setTextSize(mTextFormatting);
 
         // Draw the message
         // We will give this an international upgrade soon
         //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-        canvas.drawText("Tap to Play",
+        canvas.drawText("Game Paused",
                 mScreenWidth / 2, mScreenHeight / 2, paint);
     }
 

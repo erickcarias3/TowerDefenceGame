@@ -27,7 +27,7 @@
             android:text="Add Tower" />
 
         <Button
-            android:id="@+id/gameStart"
+            android:id="@+id/gameToggle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
