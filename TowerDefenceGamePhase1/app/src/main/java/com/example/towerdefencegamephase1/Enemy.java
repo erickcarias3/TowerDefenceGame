@@ -10,12 +10,8 @@ public class Enemy extends GameObject {
     private int speed = 10;
 
     public Enemy(float startingX, float startingY, Bitmap enemyBitmap){
-        location = new Position();
-        location.x = startingX;
-        location.y = startingY;
-        this.objectBitmap = enemyBitmap;
+        super(startingX, startingY, enemyBitmap);
     }
-
 
     public int getNextTurn(){
         return nextTurn;
@@ -28,15 +24,5 @@ public class Enemy extends GameObject {
     public int getSpeed() {
         return speed;
     }
-
-    public void setPosition(Position newPosition){
-        this.location.x = newPosition.x;
-        this.location.y = newPosition.y;
-    }
-
-    public Position getLocationOnMap(){
-        return location;
-    }
-
 
 }

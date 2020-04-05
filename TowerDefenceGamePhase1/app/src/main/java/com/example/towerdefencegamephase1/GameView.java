@@ -20,6 +20,9 @@ public class GameView extends SurfaceView implements Runnable {
     // Is the game currently playing and or paused?
     private volatile boolean gamePlaying = false;
     private volatile boolean gamePaused = true;
+    private volatile boolean drawingTower = false;
+
+
 
     // Run at 10 frames per second
     final long TARGET_FPS = 10;
@@ -62,7 +65,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (gamePlaying) {
-            if(!gamePaused) {
+            if(!gamePaused | drawingTower) {
                 // Update 10 times a second
                 if (updateRequired()) {
                     update();
@@ -121,6 +124,14 @@ public class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+
+    public void addTowerButtonLogic(MotionEvent event){
+        if(!drawingTower){
+            drawingTower = true;
+        }
+
+    }
+
     public void toggleGame(){
         gamePaused = !gamePaused;
     }
@@ -136,7 +147,6 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     }
-
 
     // Start the thread
     public void resume() {

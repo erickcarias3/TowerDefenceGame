@@ -7,7 +7,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    GameView currentGame;
+    GameView currentGameView;
     Button addTower, gameToggle;
 
     @Override
@@ -15,20 +15,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        currentGame = findViewById(R.id.gameView);
+        currentGameView = findViewById(R.id.gameView);
         addTower = findViewById(R.id.addTower);
         gameToggle = findViewById(R.id.gameToggle);
 
-        currentGame.initializeCurrentView(getWindowManager(), this);
+        currentGameView.initializeCurrentView(getWindowManager(), this);
 
         gameToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentGame.toggleGame();
+                currentGameView.toggleGame();
             }
         });
 
-       addTower.setOnTouchListener(new CustomOnTouchListner(currentGame));
+       addTower.setOnTouchListener(new CustomOnTouchListner(currentGameView));
 
 
     }
@@ -36,13 +36,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        currentGame.resume();
+        currentGameView.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        currentGame.pause();
+        currentGameView.pause();
     }
 
 }

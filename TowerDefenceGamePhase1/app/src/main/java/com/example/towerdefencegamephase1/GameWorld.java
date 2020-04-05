@@ -13,6 +13,9 @@ public class GameWorld {
 
     private GameMap gameMap;
     private Enemy testEnemy;
+    private Tower testTower;
+
+    public Position canvasPosition = new Position();
 
     // Objects for drawing
     private Canvas viewCanvas;
@@ -96,6 +99,32 @@ public class GameWorld {
 
     }
 
+    public void createTower(Context context){
+
+        int towerHeight = gameMap.getCellHeight() * 2 ;
+        int towerWidth = gameMap.getCellWidth();
+
+        Bitmap newTowerBitmap = BitmapFactory
+                .decodeResource(context.getResources(),
+                        R.drawable.tower);
+
+        newTowerBitmap = Bitmap.createScaledBitmap(newTowerBitmap,towerHeight,towerWidth,true);
+
+
+
+    }
+
+    public Position translatesToGridCords(float x, float y){
+
+        Position bitmapCoordinates = new Position();
+
+        bitmapCoordinates.x = x - canvasPosition.x;
+        bitmapCoordinates.y = y - canvasPosition.y;
+
+
+        return bitmapCoordinates;
+    }
+
     public void update(){
         if( testEnemy.location.x >= mHud.getScreenWidth())
             mHud.updateLives();
@@ -110,4 +139,5 @@ public class GameWorld {
     public void displayPausedMessage(){
         mHud.createPausedMessage(viewCanvas, mPaint);
     }
+
 }

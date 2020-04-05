@@ -18,7 +18,7 @@ public class CustomOnTouchListner implements View.OnTouchListener {
 
         switch(v.getId()){
             case R.id.addTower:
-
+                    currentGame.addTowerButtonLogic(event);
                 break;
         }
         return true;
