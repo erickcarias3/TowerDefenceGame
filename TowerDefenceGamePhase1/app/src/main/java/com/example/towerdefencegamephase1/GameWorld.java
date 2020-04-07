@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
 public class GameWorld {
@@ -70,20 +71,6 @@ public class GameWorld {
 
     }
 
-    /*public void createSimpleHUD(){
-        // Set the size and color of the mPaint for the text
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
-        mPaint.setTextSize(150);
-
-        // Draw the message
-        // We will give this an international upgrade soon
-        //gameCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-        viewCanvas.drawText("Tap to Play",
-                200, 500, mPaint);
-    }
-
-     */
-
     public void createEnemy(Context context){
 
         int enemyHeight = gameMap.getCellHeight();
@@ -97,6 +84,12 @@ public class GameWorld {
 
         testEnemy = new Enemy(-10,-10, newEnemyBitmap);
 
+    }
+
+    public void setTower(Position setPosition){
+        Rect[] occupiedCells = gameMap.checkGrid(setPosition.x, setPosition.y);
+        testTower.placeTower(occupiedCells);
+        gameMap.invalidateGuideCells();
     }
 
     public void createTower(Context context, Position startingPosition){
@@ -114,16 +107,17 @@ public class GameWorld {
 
         testTower = new Tower(startingPosition.x,startingPosition.y, newTowerBitmap);
 
-
     }
 
-    public void updateCreatedTower(Position updatedPosition){
-        testTower.setPosition(updatedPosition);
+    public void updateCreatedTower(Position newPosition){
+        testTower.setPosition(newPosition);
+        gameMap.createGuideBox(newPosition);
     }
 
     public void drawTowers(){
         try{
             testTower.draw(viewCanvas);
+
         }
         catch(NullPointerException o){
             return;
@@ -141,7 +135,7 @@ public class GameWorld {
         return bitmapCoordinates;
     }
 
-    public void update(boolean creatingDefences){
+    public void update(){
 
         if (testEnemy.location.x >= mHud.getScreenWidth())
             mHud.updateLives();

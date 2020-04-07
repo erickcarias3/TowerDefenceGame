@@ -13,9 +13,10 @@ public class GameGrid {
     private Dimesion blockSize;
     private Paint paint = new Paint();
     protected Rect[][] gridCells;
-    private Rect touchedCell;
-    private Rect touchedTool;
-    private ArrayList<Rect> selectedTools = new ArrayList<>();
+
+    private Rect selectedTower;
+    private Rect[] guideCells = new Rect[2];
+   // private ArrayList<Rect> selectedTools = new ArrayList<>();
 
 
     public GameGrid(int numColumns, int numRows, int screenWidth, int screenHeight) {
@@ -42,21 +43,15 @@ public class GameGrid {
             }
         }
 
-        if(touchedCell != null){
-            createHitBox(touchedCell, canvas);
-        }
-
-        if(touchedTool != null){
-            createHitBox(touchedTool,canvas);
-        }
-
-        if(!selectedTools.isEmpty()){
-            for (Rect tool : selectedTools) {
-                createHitBox(tool,canvas);
+        if(guideCells[0] != null){
+            for (Rect rect : guideCells) {
+                createHitBox(rect,canvas);
             }
         }
 
-
+        if(selectedTower != null){
+            createHitBox(selectedTower,canvas);
+        }
 
     }
 
@@ -78,20 +73,23 @@ public class GameGrid {
     }
 
     //this function checks whether two touched points are inside any of the rectangles in the 2D Matrix
-    //if it finds a match it sets the found cell as the touched cell in the grid
-    public Rect checkGrid(float touchedX, float touchedY){
-
+    //if it finds a match it adds the touched cell and the cell directly on top
+    //to create an array of cells to then draw later
+    public Rect[] checkGrid(float touchedX, float touchedY){
+        Rect[] touchedCells = new Rect[2];
 
         for(int i = 0; i < gridDimensions.getHeight(); i++) {
             for (int k = 0; k < gridDimensions.getWidth(); k++) {
                 if (gridCells[i][k].contains((int) touchedX , (int) touchedY )){
-                    touchedCell = gridCells[i][k];
+                    touchedCells[0] = gridCells[i][k];
                     System.out.println("----Cell:" + "[" + i + "]" +"[" + k + "]" + "Touched ----");
+                    touchedCells[1]= gridCells[i - 1][k] ;
+
                     break;
                 }
             }
         }
-        return touchedCell;
+        return touchedCells;
     }
 
     //draws a Hitbox around the passed cell (Rectangle)
@@ -102,51 +100,44 @@ public class GameGrid {
         canvas.drawRect(rect,paint);
     }
 
-    public void addToSelectedToolArray(float xFound,float yFound){
-        Rect selectedToolLocation = checkGrid(xFound,yFound);
-        invalidateTouchedCell();
-        selectedTools.add(selectedToolLocation);
 
-    }
-
-    public void invalidateSelectedTools(){
-        selectedTools.clear();
+    public void invalidateGuideCells(){
+        guideCells = new Rect[2];
     }
 
     //sets the touched cell to null so that the touch Hitbox is disabled and
     //is not drawn in the draw method
-    public void invalidateTouchedCell(){
-        touchedCell = null;
+
+
+    public void invalidateTouchedTool(){
+        selectedTower = null;
     }
 
-    public void invalidateTouchedTool(){touchedTool = null;}
-
-    public void setTouchedTool(Rect rect){
-        touchedTool = rect;
+    public void setSelectedTower(Rect rect){
+        selectedTower = rect;
     }
 
     public void invalidateHitboxes(){
-        touchedCell = null;
-        touchedTool = null;
-        selectedTools.clear();
+        selectedTower = null;
+        invalidateGuideCells();
     }
 
     //Getters for grid information
 
-    public Rect getTouchedTool() {
-        return touchedTool;
+    public Rect getSelectedTower() {
+        return selectedTower;
     }
 
     public int getGridWidth() {
         return this.gridDimensions.getWidth();
     }
 
-    public ArrayList<Rect> getSelectedGridSquares(){
-        return selectedTools;
-    }
-
     public int getGridHeight() {
         return this.gridDimensions.getHeight();
+    }
+
+    public void createGuideBox(Position position){
+        guideCells = checkGrid(position.x, position.y);
     }
 
     public int getCellHeight() {
