@@ -27,7 +27,7 @@ public class GameWorld {
     private Dimesion mapDimensions;
 
     // The Heads up Display
-    private Hud mHud;
+    private HUD mHUD;
 
 
     public GameWorld(Context context, DisplayManger display, Canvas canvas, SurfaceHolder surfaceHolder){
@@ -38,7 +38,7 @@ public class GameWorld {
         mPaint = new Paint();
         gameMap = new GameMap(context, display, viewCanvas, mapDimensions);
         createEnemy(context);
-        mHud = new Hud();
+        mHUD = new HUD();
 
     }
 
@@ -54,7 +54,7 @@ public class GameWorld {
             //draw the background map and grid
             gameMap.draw(viewCanvas);
 
-            mHud.draw(viewCanvas, mPaint);
+            mHUD.draw(viewCanvas, mPaint);
 
             testEnemy.draw(viewCanvas);
 
@@ -137,8 +137,8 @@ public class GameWorld {
 
     public void update(){
 
-        if (testEnemy.location.x >= mHud.getScreenWidth())
-            mHud.updateLives();
+        if (testEnemy.location.x >= mHUD.getScreenWidth())
+            mHUD.updateLives();
         moveEnemy();
 
     }
@@ -148,7 +148,7 @@ public class GameWorld {
     }
 
     public void displayPausedMessage(){
-        mHud.createPausedMessage(viewCanvas, mPaint);
+        mHUD.createPausedMessage(viewCanvas, mPaint);
     }
 
 }
