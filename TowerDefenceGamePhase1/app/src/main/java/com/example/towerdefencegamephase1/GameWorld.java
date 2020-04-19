@@ -9,12 +9,19 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
+import java.util.ArrayList;
+
 public class GameWorld {
 
 
     private GameMap gameMap;
+
+    //two test objects
     private Enemy testEnemy;
     private Tower testTower;
+
+    //array list of towers
+    private ArrayList<Tower> allTowers = new ArrayList<>();
 
     public Position canvasPosition = new Position();
 
@@ -89,6 +96,7 @@ public class GameWorld {
     public void setTower(Position setPosition){
         Rect[] occupiedCells = gameMap.checkGrid(setPosition.x, setPosition.y);
         testTower.placeTower(occupiedCells);
+        allTowers.add(testTower);
         gameMap.invalidateGuideCells();
     }
 
@@ -117,7 +125,9 @@ public class GameWorld {
     public void drawTowers(){
         try{
             testTower.draw(viewCanvas);
-
+            for(Tower tower: allTowers){
+                tower.draw(viewCanvas);
+            }
         }
         catch(NullPointerException o){
             return;

@@ -66,7 +66,7 @@ public class Hud {
         canvas.drawText("Lives: " + mLives,
                 mTextFormatting / 2, mTextFormatting + mTextFormatting, paint);
 
-        drawControls(canvas, paint);
+       // drawControls(canvas, paint);
 
     }
 
