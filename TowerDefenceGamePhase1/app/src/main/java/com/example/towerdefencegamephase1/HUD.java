@@ -8,7 +8,7 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-public class Hud {
+public class HUD {
 
     // Holds the text size and size of the screen.
     private int mTextFormatting;
@@ -24,7 +24,7 @@ public class Hud {
 
     private ArrayList<Rect> controls;
 
-    public Hud () {
+    public HUD() {
         // Gets the screen size and assigns it to the appropriate height and width variable.
         mScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         mScreenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -32,9 +32,10 @@ public class Hud {
         // Sets the text size.
         mTextFormatting = mScreenWidth / 35;
 
-        prepareControls();
+        //prepareControls();
     }
 
+    /*
     private void prepareControls() {
         int buttonWidth = mScreenWidth / 15;
         int buttonHeight = mScreenHeight / 12;
@@ -54,6 +55,7 @@ public class Hud {
         controls.add(TOWER_ONE, towerOne);
         controls.add(TOWER_TWO, towerTwo);
     }
+    */
 
     public void draw(Canvas canvas, Paint paint) {
         // Drawing the HUD
@@ -66,10 +68,9 @@ public class Hud {
         canvas.drawText("Lives: " + mLives,
                 mTextFormatting / 2, mTextFormatting + mTextFormatting, paint);
 
-       // drawControls(canvas, paint);
 
     }
-
+/*
     private void drawControls(Canvas canvas, Paint paint) {
         paint.setColor(Color.argb(100, 255, 255, 255));
 
@@ -79,7 +80,7 @@ public class Hud {
         // Sets the colors black
         paint.setColor(Color.argb(255, 255, 255, 255));
     }
-
+*/
     public void createPausedMessage(Canvas canvas, Paint paint) {
 
         paint.setColor(Color.argb(255, 255, 255, 255));
@@ -91,6 +92,8 @@ public class Hud {
         canvas.drawText("Game Paused",
                 mScreenWidth / 2, mScreenHeight / 2, paint);
     }
+
+
 
     public void updateLives() {mLives--;}
 
