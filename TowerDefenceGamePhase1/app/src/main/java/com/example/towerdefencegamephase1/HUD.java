@@ -18,11 +18,12 @@ public class HUD {
     //
     private int mLives = 10;
     private int mGold = 0;
+    private int mWave = 1;
 
     static int TOWER_ONE = 0;
     static int TOWER_TWO = 1;
 
-    private ArrayList<Rect> controls;
+    //private ArrayList<Rect> controls;
 
     public HUD() {
         // Gets the screen size and assigns it to the appropriate height and width variable.
@@ -68,6 +69,8 @@ public class HUD {
         canvas.drawText("Lives: " + mLives,
                 mTextFormatting / 2, mTextFormatting + mTextFormatting, paint);
 
+        canvas.drawText("Wave: " + mWave,
+                mTextFormatting / 2, mTextFormatting + mTextFormatting + mTextFormatting, paint);
 
     }
 /*

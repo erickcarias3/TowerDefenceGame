@@ -23,6 +23,9 @@ public class GameWorld {
     //array list of towers
     private ArrayList<Tower> allTowers = new ArrayList<>();
 
+    // Array of enemies
+    private ArrayList<Enemy> spawnedEnemies = new ArrayList<>();
+
     public Position canvasPosition = new Position();
 
     // Objects for drawing
@@ -63,7 +66,9 @@ public class GameWorld {
 
             mHUD.draw(viewCanvas, mPaint);
 
-            testEnemy.draw(viewCanvas);
+            for( int i = 0; i < spawnedEnemies.size(); ++i) {
+                spawnedEnemies.get(i).draw(viewCanvas);
+            }
 
             drawTowers();
 
@@ -89,7 +94,13 @@ public class GameWorld {
 
         newEnemyBitmap = Bitmap.createScaledBitmap(newEnemyBitmap,enemyHeight,enemyWidth,true);
 
-        testEnemy = new Enemy(-10,-10, newEnemyBitmap);
+        spawnedEnemies.add(new Skeleton(-10,-10, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-12,-11, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-13,-9, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-15,-11, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-17,-10, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-19,-9, newEnemyBitmap));
+        spawnedEnemies.add(new Skeleton(-20,-11, newEnemyBitmap));
 
     }
 
@@ -147,14 +158,20 @@ public class GameWorld {
 
     public void update(){
 
-        if (testEnemy.location.x >= mHUD.getScreenWidth())
-            mHUD.updateLives();
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
+                mHUD.updateLives();
+            }
+        }
         moveEnemy();
 
     }
 
     public void moveEnemy(){
-        gameMap.followPath(testEnemy);
+
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            gameMap.followPath(spawnedEnemies.get(i));
+        }
     }
 
     public void displayPausedMessage(){
