@@ -17,8 +17,9 @@ public class HUD {
 
     //
     private int mLives = 10;
-    private int mGold = 0;
+    private int mGold = 20;
     private int mWave = 1;
+    private int mTimer = 20;
 
     static int TOWER_ONE = 0;
     static int TOWER_TWO = 1;
@@ -70,7 +71,10 @@ public class HUD {
                 mTextFormatting / 2, mTextFormatting + mTextFormatting, paint);
 
         canvas.drawText("Wave: " + mWave,
-                mTextFormatting / 2, mTextFormatting + mTextFormatting + mTextFormatting, paint);
+                mTextFormatting / 2, mTextFormatting * 3, paint);
+
+        canvas.drawText("Time: " + mTimer,
+                mTextFormatting / 2, mTextFormatting * 4, paint);
 
     }
 /*
@@ -96,14 +100,15 @@ public class HUD {
                 mScreenWidth / 2, mScreenHeight / 2, paint);
     }
 
-
-
     public void updateLives() {mLives--;}
 
-    public void updateScore(int pointValue) {
-        mGold += pointValue;
-    }
+    public void updateGold(int pointValue) { mGold += pointValue; }
+
+    public void updateTimer() { mTimer--; }
+
+    public void resetTimer() { mTimer = 20;}
 
     public int getScreenWidth() {return mScreenWidth;}
 
+    public int getWave() { return mWave; }
 }

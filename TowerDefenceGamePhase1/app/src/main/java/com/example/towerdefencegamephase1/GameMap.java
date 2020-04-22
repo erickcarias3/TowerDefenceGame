@@ -46,8 +46,8 @@ public class GameMap extends GameGrid{
 
         gameCanvas.drawBitmap(map,0,0, null );
 
-        drawGrid(gameCanvas);
+        //drawGrid(gameCanvas);
 
-        gameCanvas.drawPath(enemyPath.getPath(), paint );
+        //gameCanvas.drawPath(enemyPath.getPath(), paint );
     }
 }
