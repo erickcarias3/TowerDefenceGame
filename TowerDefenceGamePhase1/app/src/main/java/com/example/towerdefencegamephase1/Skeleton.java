@@ -10,7 +10,7 @@ public class Skeleton extends Enemy {
 
     public Skeleton(float startingX, float startingY, Bitmap enemyBitmap) {
         super(startingX, startingY, enemyBitmap);
-        mspeed = 20;
+        mspeed = 12;
         mhealth = 5;
         mdead = false;
     }

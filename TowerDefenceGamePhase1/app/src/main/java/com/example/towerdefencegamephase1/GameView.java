@@ -53,7 +53,10 @@ public class GameView extends SurfaceView implements Runnable {
         DisplayManger display = new DisplayManger(displayWindow);
 
         //create a canvas using a bitmap
-        Bitmap myBitmap = Bitmap.createBitmap(display.getScreenWidth(), display.getScreenHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap myBitmap = Bitmap.createBitmap(display.getScreenWidth(),
+                display.getScreenHeight(),
+                Bitmap.Config.ARGB_8888);
+
         Canvas bitmapGameCanvas = new Canvas(myBitmap);
 
         currentGameWorld = new GameWorld(context, display, bitmapGameCanvas, getHolder() );

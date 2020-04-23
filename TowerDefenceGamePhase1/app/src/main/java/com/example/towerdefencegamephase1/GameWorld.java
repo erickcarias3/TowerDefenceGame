@@ -39,6 +39,9 @@ public class GameWorld {
     // The Heads up Display
     private HUD mHUD;
 
+    // There are 1000 milliseconds in a second
+    final long MILLIS_PER_SECOND = 1000;
+
 
     public GameWorld(Context context, DisplayManger display, Canvas canvas, SurfaceHolder surfaceHolder){
        //initialize variables
@@ -66,6 +69,7 @@ public class GameWorld {
 
             mHUD.draw(viewCanvas, mPaint);
 
+            // Draws the Array List of the enemies.
             for( int i = 0; i < spawnedEnemies.size(); ++i) {
                 spawnedEnemies.get(i).draw(viewCanvas);
             }
@@ -103,6 +107,9 @@ public class GameWorld {
         skeletonBitmap = Bitmap.createScaledBitmap(skeletonBitmap,enemyHeight,enemyWidth,true);
         snakeBitmap = Bitmap.createScaledBitmap(snakeBitmap, enemyHeight, enemyWidth, true);
         trollBitmap = Bitmap.createScaledBitmap(trollBitmap, enemyHeight, enemyWidth, true);
+/*
+        Added for when we get wave counting working otherwise we just spawn a few of the different
+        enemies.
 
         if(currentWave < 3){
             number_of_enemies_to_spawn = currentWave * 10;
@@ -143,14 +150,16 @@ public class GameWorld {
             }
         }
 
+ */
+
 
         spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-12,-11, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-13,-9, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-15,-11, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-17,-10, skeletonBitmap));
-        spawnedEnemies.add(new Snake(-19,-9, snakeBitmap));
-        spawnedEnemies.add(new Skeleton(-20,-11, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Snake(-10,-10, snakeBitmap));
+        spawnedEnemies.add(new Troll(-10,-10, trollBitmap));
 
     }
 
@@ -207,6 +216,8 @@ public class GameWorld {
     }
 
     public void update(){
+
+        mHUD.updateTimer();
 
         if (spawnedEnemies.size() == 0)
             createWave();

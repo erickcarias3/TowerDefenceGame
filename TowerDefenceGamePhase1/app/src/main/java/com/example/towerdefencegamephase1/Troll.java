@@ -10,7 +10,7 @@ public class Troll extends Enemy {
 
     public Troll(float startingX, float startingY, Bitmap enemyBitmap) {
         super(startingX, startingY, enemyBitmap);
-        mspeed = 5;
+        mspeed = 9;
         mhealth = 20;
         mdead = false;
     }

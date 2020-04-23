@@ -9,7 +9,7 @@ public class Snake extends Enemy{
 
     public Snake(float startingX, float startingY, Bitmap enemyBitmap) {
         super(startingX, startingY, enemyBitmap);
-        mspeed = 30;
+        mspeed = 16;
         mhealth = 5;
         mdead = false;
     }

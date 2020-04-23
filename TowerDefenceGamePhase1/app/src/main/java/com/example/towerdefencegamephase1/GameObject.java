@@ -15,7 +15,10 @@ public abstract class GameObject {
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(objectBitmap, location.x - ((float) objectBitmap.getWidth()/2), (int) location.y - ((float) objectBitmap.getHeight()/2),null);
+        canvas.drawBitmap(objectBitmap,
+                location.x - ((float) objectBitmap.getWidth()/2),
+                (int) location.y - ((float) objectBitmap.getHeight()/2),
+                null);
     }
 
     public void setPosition(Position newPosition){
