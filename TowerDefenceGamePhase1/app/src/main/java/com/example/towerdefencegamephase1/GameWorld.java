@@ -17,7 +17,6 @@ public class GameWorld {
     private Context context;
 
     //two test objects
-    private Enemy testEnemy;
     private Tower testTower;
 
     //array list of towers
@@ -38,9 +37,6 @@ public class GameWorld {
 
     // The Heads up Display
     private HUD mHUD;
-
-    // There are 1000 milliseconds in a second
-    final long MILLIS_PER_SECOND = 1000;
 
 
     public GameWorld(Context context, DisplayManger display, Canvas canvas, SurfaceHolder surfaceHolder){
@@ -87,7 +83,7 @@ public class GameWorld {
 
     }
 
-    public void createWave(){
+    private void createWave(){
 
         int currentWave = mHUD.getWave();
         int enemyHeight = gameMap.getCellHeight();
