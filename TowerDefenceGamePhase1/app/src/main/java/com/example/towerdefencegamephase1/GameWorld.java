@@ -193,6 +193,7 @@ public class GameWorld {
             testTower.draw(viewCanvas);
             for(Tower tower: allTowers){
                 tower.draw(viewCanvas);
+
             }
         }
         catch(NullPointerException o){
@@ -200,8 +201,15 @@ public class GameWorld {
         }
     }
 
-    public void towerTargeting(Enemy enemy){
-
+    private void checkTowerTargeting(){
+        for(Tower tower: allTowers) {
+            for (Enemy enemy : spawnedEnemies) {
+                if(tower.contains((int) enemy.location.x,(int) enemy.location.y) ){
+                    tower.addTarget(enemy);
+                }
+            }
+            tower.createTargetEnemy();
+        }
     }
 
     public Position translatesToGridCords(float x, float y){
@@ -229,7 +237,7 @@ public class GameWorld {
         }
         moveEnemy();
 
-        towerTargeting(testEnemy);
+        checkTowerTargeting();
 
     }
 

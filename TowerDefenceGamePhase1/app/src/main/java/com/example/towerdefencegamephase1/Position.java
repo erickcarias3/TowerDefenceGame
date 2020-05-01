@@ -1,6 +1,5 @@
 package com.example.towerdefencegamephase1;
 
-import java.io.Serializable;
 
 /*
             :Welcome To the Position Class:
