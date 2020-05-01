@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 public class Enemy extends GameObject {
 
     private int nextTurn = 1;
-    private int speed = 10;
 
     public Enemy(float startingX, float startingY, Bitmap enemyBitmap){
         super(startingX, startingY, enemyBitmap);
@@ -21,8 +20,6 @@ public class Enemy extends GameObject {
         this.nextTurn = nextTurn;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
+    public int getSpeed() {return 10;}
 
 }

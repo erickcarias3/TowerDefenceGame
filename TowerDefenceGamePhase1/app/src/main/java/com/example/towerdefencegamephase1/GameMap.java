@@ -12,13 +12,16 @@ public class GameMap extends GameGrid{
     private Bitmap map;
     private GamePath enemyPath;
 
-    public GameMap(Context context, DisplayManger displayManger, Canvas canvas, Dimesion mapSize){
+    public GameMap(Context context, DisplayManger displayManger, Canvas canvas, Dimesion mapSize) {
         super(mapSize.getHeight(),mapSize.getWidth(), canvas.getWidth(), canvas.getHeight());
         map = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.map);
 
-        map = Bitmap.createScaledBitmap(map,displayManger.getScreenWidth(),displayManger.getScreenHeight(),true);
+        map = Bitmap.createScaledBitmap(map,
+                displayManger.getScreenWidth(),
+                displayManger.getScreenHeight(),
+                true);
 
         enemyPath = new GamePath(gridCells, getCellWidth());
     }
@@ -46,8 +49,8 @@ public class GameMap extends GameGrid{
 
         gameCanvas.drawBitmap(map,0,0, null );
 
-        drawGrid(gameCanvas);
+        //drawGrid(gameCanvas);
 
-        gameCanvas.drawPath(enemyPath.getPath(), paint );
+        //gameCanvas.drawPath(enemyPath.getPath(), paint );
     }
 }

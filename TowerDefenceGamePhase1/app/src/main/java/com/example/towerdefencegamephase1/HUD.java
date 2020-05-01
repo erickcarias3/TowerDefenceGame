@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.CountDownTimer;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -17,12 +19,14 @@ public class HUD {
 
 
     private int mLives = 10;
-    private int mGold = 0;
+    private int mGold = 20;
+    private int mWave = 1;
+    private final int waveTimer = 20;
+    private int mTimer = waveTimer;
 
-    static int TOWER_ONE = 0;
-    static int TOWER_TWO = 1;
+    private long countdown_milliseconds = 1000;
+    private long saved_milli_time = 0;
 
-    private ArrayList<Rect> controls;
 
     public HUD() {
         // Gets the screen size and assigns it to the appropriate height and width variable.
@@ -68,6 +72,11 @@ public class HUD {
         canvas.drawText("Lives: " + mLives,
                 mTextFormatting / 2, mTextFormatting + mTextFormatting, paint);
 
+        canvas.drawText("Wave: " + mWave,
+                mTextFormatting / 2, mTextFormatting * 3, paint);
+
+        canvas.drawText("Time: " + mTimer,
+               mTextFormatting / 2, mTextFormatting * 4, paint);
 
     }
 /*
@@ -93,14 +102,38 @@ public class HUD {
                 mScreenWidth / 2, mScreenHeight / 2, paint);
     }
 
-
-
     public void updateLives() {mLives--;}
 
-    public void updateScore(int pointValue) {
-        mGold += pointValue;
+    public void updateGold(int pointValue) { mGold += pointValue; }
+
+    public void updateTimer() {
+
+        long current_time_milliseconds = System.currentTimeMillis();
+        countdown_milliseconds =
+                countdown_milliseconds - (current_time_milliseconds - saved_milli_time);
+
+        Log.d("countdown", String.valueOf(countdown_milliseconds));
+
+        if ( countdown_milliseconds <= 0) {
+            mTimer--;
+            countdown_milliseconds = 1000;
+        }
+
+        if (mTimer == 0) {
+            resetTimer();
+        }
+
+        saved_milli_time = current_time_milliseconds;
+
+
+    }
+
+    public void resetTimer() {
+        mTimer = waveTimer;
+        countdown_milliseconds = 1000;
     }
 
     public int getScreenWidth() {return mScreenWidth;}
 
+    public int getWave() { return mWave; }
 }

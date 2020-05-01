@@ -13,15 +13,17 @@ import java.util.ArrayList;
 
 public class GameWorld {
 
-
     private GameMap gameMap;
+    private Context context;
 
     //two test objects
-    private Enemy testEnemy;
     private Tower testTower;
 
     //array list of towers
     private ArrayList<Tower> allTowers = new ArrayList<>();
+
+    // Array of enemies
+    private ArrayList<Enemy> spawnedEnemies = new ArrayList<>();
 
     public Position canvasPosition = new Position();
 
@@ -44,8 +46,8 @@ public class GameWorld {
         mapDimensions = new Dimesion(20,20);
         mPaint = new Paint();
         gameMap = new GameMap(context, display, viewCanvas, mapDimensions);
-        createEnemy(context);
         mHUD = new HUD();
+        this.context = context;
 
     }
 
@@ -63,7 +65,10 @@ public class GameWorld {
 
             mHUD.draw(viewCanvas, mPaint);
 
-            testEnemy.draw(viewCanvas);
+            // Draws the Array List of the enemies.
+            for( int i = 0; i < spawnedEnemies.size(); ++i) {
+                spawnedEnemies.get(i).draw(viewCanvas);
+            }
 
             drawTowers();
 
@@ -78,18 +83,79 @@ public class GameWorld {
 
     }
 
-    public void createEnemy(Context context){
+    private void createWave(){
 
+        int currentWave = mHUD.getWave();
         int enemyHeight = gameMap.getCellHeight();
         int enemyWidth = gameMap.getCellWidth();
 
-        Bitmap newEnemyBitmap = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.skeleton);
+        int number_of_enemies_to_spawn = currentWave;
 
-        newEnemyBitmap = Bitmap.createScaledBitmap(newEnemyBitmap,enemyHeight,enemyWidth,true);
+        Bitmap skeletonBitmap = BitmapFactory
+                .decodeResource(context.getResources(), R.drawable.skeleton);
 
-        testEnemy = new Enemy(-10,-10, newEnemyBitmap);
+        Bitmap snakeBitmap = BitmapFactory
+                .decodeResource(context.getResources(), R.drawable.snake);
+
+        Bitmap trollBitmap = BitmapFactory
+                .decodeResource(context.getResources(), R.drawable.troll_1);
+
+        skeletonBitmap = Bitmap.createScaledBitmap(skeletonBitmap,enemyHeight,enemyWidth,true);
+        snakeBitmap = Bitmap.createScaledBitmap(snakeBitmap, enemyHeight, enemyWidth, true);
+        trollBitmap = Bitmap.createScaledBitmap(trollBitmap, enemyHeight, enemyWidth, true);
+/*
+        Added for when we get wave counting working otherwise we just spawn a few of the different
+        enemies.
+
+        if(currentWave < 3){
+            number_of_enemies_to_spawn = currentWave * 10;
+
+            for (int i = 0; i < number_of_enemies_to_spawn; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+            }
+        } else if (currentWave >= 3 && currentWave < 7) {
+            number_of_enemies_to_spawn = currentWave * 10;
+
+            float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.7f;
+            float number_of_snakes = (float)number_of_enemies_to_spawn * 0.3f;
+
+            for (int i = 0; i < number_of_skeletons; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+            }
+
+            for (int i = 0; i < number_of_snakes; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, snakeBitmap));
+            }
+        } else {
+            number_of_enemies_to_spawn = currentWave * 10;
+
+            float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.7f;
+            float number_of_snakes = (float)number_of_enemies_to_spawn * 0.2f;
+            float number_of_trolls = (float)number_of_enemies_to_spawn * 0.1f;
+
+            for (int i = 0; i < number_of_skeletons; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+            }
+
+            for (int i = 0; i < number_of_snakes; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, snakeBitmap));
+            }
+
+            for (int i = 0; i < number_of_trolls; ++i) {
+                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+            }
+        }
+
+ */
+
+
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
+        spawnedEnemies.add(new Snake(-10,-10, snakeBitmap));
+        spawnedEnemies.add(new Troll(-10,-10, trollBitmap));
 
     }
 
@@ -151,8 +217,16 @@ public class GameWorld {
 
     public void update(){
 
-        if (testEnemy.location.x >= mHUD.getScreenWidth())
-            mHUD.updateLives();
+        mHUD.updateTimer();
+
+        if (spawnedEnemies.size() == 0)
+            createWave();
+
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
+                mHUD.updateLives();
+            }
+        }
         moveEnemy();
 
         towerTargeting(testEnemy);
@@ -160,7 +234,10 @@ public class GameWorld {
     }
 
     public void moveEnemy(){
-        gameMap.followPath(testEnemy);
+
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            gameMap.followPath(spawnedEnemies.get(i));
+        }
     }
 
     public void displayPausedMessage(){
