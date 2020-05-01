@@ -134,6 +134,10 @@ public class GameWorld {
         }
     }
 
+    public void towerTargeting(Enemy enemy){
+
+    }
+
     public Position translatesToGridCords(float x, float y){
 
         Position bitmapCoordinates = new Position();
@@ -150,6 +154,8 @@ public class GameWorld {
         if (testEnemy.location.x >= mHUD.getScreenWidth())
             mHUD.updateLives();
         moveEnemy();
+
+        towerTargeting(testEnemy);
 
     }
 

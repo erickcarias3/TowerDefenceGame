@@ -15,7 +15,7 @@ public class HUD {
     private int mScreenHeight;
     private int mScreenWidth;
 
-    //
+
     private int mLives = 10;
     private int mGold = 0;
 
