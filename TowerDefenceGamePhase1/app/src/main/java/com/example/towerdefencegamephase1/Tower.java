@@ -16,6 +16,10 @@ public class Tower extends GameObject {
     Targeting aimPriority = Targeting.closest;
     ArrayList<Enemy> enemiesWithinRadius = new ArrayList<>();
     Enemy currentTarget = null;
+    boolean fireShot = true;
+    final long fireRate = 500;
+    private long nextShotTime = 0;
+    private boolean debugging = false;
 
 
     public Tower(float startingX, float startingY, Bitmap towerBitmap){
@@ -24,8 +28,14 @@ public class Tower extends GameObject {
 
     public void placeTower(Rect[] occupiedCells) {
         this.occupiedCells = occupiedCells;
-        Position newPosition = new Position(occupiedCells[1].centerX() , occupiedCells[1].centerY());
-        setPosition(newPosition);
+        try{
+            Position newPosition = new Position(occupiedCells[1].centerX() , occupiedCells[1].centerY());
+            setPosition(newPosition);
+        }
+        catch(NullPointerException n){
+            return;
+        }
+
     }
 
     public void addTarget(Enemy newTarget){
@@ -36,7 +46,6 @@ public class Tower extends GameObject {
         if ((x - location.x) * (x - location.x) +
                 (y - location.y) * (y - location.y) <= targetRadius * targetRadius){
 
-            System.out.println("enemy within radius added to target list");
             return true;
         }
         return false;
@@ -67,6 +76,20 @@ public class Tower extends GameObject {
         }
         enemiesWithinRadius.clear();
 
+    }
+
+    public Enemy getCurrentTarget(){
+        return currentTarget;
+    }
+
+    public boolean checkShotStatus(){
+        if(nextShotTime <= System.currentTimeMillis()){
+            nextShotTime = System.currentTimeMillis() + fireRate;
+            fireShot = true;
+        }else{
+            fireShot = false;
+        }
+        return fireShot;
     }
 
     private void findNewTarget(){
@@ -101,6 +124,14 @@ public class Tower extends GameObject {
                 null);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLUE);
+
+        if(debugging){
+            drawDebugging(canvas);
+        }
+    }
+
+    private void drawDebugging(Canvas canvas){
+
         canvas.drawCircle(location.x,location.y,targetRadius, paint );
 
         if(currentTarget!=null){
@@ -108,7 +139,7 @@ public class Tower extends GameObject {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(1f);
             canvas.drawLine(this.location.x,this.location.y,currentTarget.location.x,currentTarget.location.y, paint);
-            System.out.println("drawing shot");
+            // System.out.println("drawing shot");
         }
     }
 }

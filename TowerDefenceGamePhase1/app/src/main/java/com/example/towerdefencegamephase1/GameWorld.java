@@ -15,6 +15,7 @@ public class GameWorld {
 
     private GameMap gameMap;
     private Context context;
+    public TowerManager defenceManager;
 
     //two test objects
     private Tower testTower;
@@ -24,6 +25,7 @@ public class GameWorld {
 
     // Array of enemies
     private ArrayList<Enemy> spawnedEnemies = new ArrayList<>();
+
     private ArrayList<Enemy> enemyHoldingList = new ArrayList<>();
 
     public Position canvasPosition = new Position();
@@ -49,7 +51,7 @@ public class GameWorld {
         gameMap = new GameMap(context, display, viewCanvas, mapDimensions);
         mHUD = new HUD();
         this.context = context;
-
+        defenceManager = new TowerManager(context , gameMap);
     }
 
     public void draw(Boolean gamePaused){
@@ -71,7 +73,11 @@ public class GameWorld {
                 spawnedEnemies.get(i).draw(viewCanvas);
             }
 
-            drawTowers();
+            gameMap.drawCastle(viewCanvas);
+
+            defenceManager.drawTowers(viewCanvas , allTowers);
+
+            defenceManager.drawShots(viewCanvas);
 
             // Draw some text while paused
              if(gamePaused){
@@ -148,57 +154,21 @@ public class GameWorld {
         }
     }
 
-    public void setTower(Position setPosition){
+    public void placeCreatedTower(Position setPosition){
         Rect[] occupiedCells = gameMap.checkGrid(setPosition.x, setPosition.y);
-        testTower.placeTower(occupiedCells);
-        allTowers.add(testTower);
+        defenceManager.setTower(occupiedCells,allTowers);
         gameMap.invalidateGuideCells();
     }
 
-    public void createTower(Context context, Position startingPosition){
-
-        int towerHeight = gameMap.getCellHeight() * 2 ;
-        int towerWidth = gameMap.getCellWidth();
-
-        Bitmap newTowerBitmap = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.tower);
-
-        newTowerBitmap = Bitmap.createScaledBitmap(newTowerBitmap,towerHeight,towerWidth,true);
-
+    public void createDefence(Context context, Position startingPosition, String typeOfDefence){
         startingPosition = translatesToGridCords(startingPosition.x, startingPosition.y);
-
-        testTower = new Tower(startingPosition.x,startingPosition.y, newTowerBitmap);
+        defenceManager.createTower(context, startingPosition , gameMap, typeOfDefence);
 
     }
 
     public void updateCreatedTower(Position newPosition){
-        testTower.setPosition(newPosition);
         gameMap.createGuideBox(newPosition);
-    }
-
-    public void drawTowers(){
-        try{
-            testTower.draw(viewCanvas);
-            for(Tower tower: allTowers){
-                tower.draw(viewCanvas);
-
-            }
-        }
-        catch(NullPointerException o){
-            return;
-        }
-    }
-
-    private void checkTowerTargeting(){
-        for(Tower tower: allTowers) {
-            for (Enemy enemy : spawnedEnemies) {
-                if(tower.contains((int) enemy.location.x,(int) enemy.location.y) ){
-                    tower.addTarget(enemy);
-                }
-            }
-            tower.createTargetEnemy();
-        }
+        defenceManager.updateCreatedTowerPosition(newPosition);
     }
 
     public Position translatesToGridCords(float x, float y){
@@ -243,12 +213,12 @@ public class GameWorld {
         // removed from the game.
         for( int i = 0; i < spawnedEnemies.size(); ++i) {
             if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
-                spawnedEnemies.remove(i);
+                spawnedEnemies.remove(spawnedEnemies.get(i));
                 mHUD.updateLives();
             }
             // Checks if the enemy is dead, and if they are removes them from the game.
             else if(spawnedEnemies.get(i).isDead()) {
-                spawnedEnemies.remove(i);
+                spawnedEnemies.remove(spawnedEnemies.get(i));
             }
             else {
                 continue;
@@ -256,7 +226,13 @@ public class GameWorld {
         }
         moveEnemy(); // does the enemy movement.
 
-        checkTowerTargeting();
+
+        defenceManager.checkTowerTargeting(allTowers,spawnedEnemies);
+
+        defenceManager.updateShots();
+
+        defenceManager.fireShots(allTowers);
+
 
     }
 

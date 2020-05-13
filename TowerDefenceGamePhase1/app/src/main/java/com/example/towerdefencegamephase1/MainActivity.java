@@ -49,6 +49,8 @@ public class MainActivity extends Activity {
         });
 
         addTower.setOnTouchListener(new CustomOnTouchListner(currentGameView));
+        addCatapult.setOnTouchListener(new CustomOnTouchListner(currentGameView));
+        addArcher.setOnTouchListener(new CustomOnTouchListner(currentGameView));
     }
 
 }

@@ -65,7 +65,7 @@ public class HUD {
 
     public void draw(Canvas canvas, Paint paint) {
         // Drawing the HUD
-        paint.setColor(Color.argb(255, 0, 0, 0));
+        paint.setColor(Color.WHITE);
         paint.setTextSize(mTextFormatting);
 
         canvas.drawText("Gold: " + mGold,
@@ -116,7 +116,7 @@ public class HUD {
         countdown_milliseconds =
                 countdown_milliseconds - (current_time_milliseconds - saved_milli_time);
 
-        Log.d("countdown", String.valueOf(countdown_milliseconds));
+       // Log.d("countdown", String.valueOf(countdown_milliseconds));
 
         if ( countdown_milliseconds <= 0) {
             mTimer--;

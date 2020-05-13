@@ -111,7 +111,7 @@ public class GameView extends SurfaceView implements Runnable {
         Position eventPosition = new Position(motionEvent.getRawX() , motionEvent.getRawY());
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN | MotionEvent.ACTION_MOVE:
-                if (gamePaused & drawingTower) {
+                if (drawingTower) {
                     currentGameWorld.updateCreatedTower(eventPosition);
                     return true;
                 }
@@ -119,7 +119,7 @@ public class GameView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_UP:
                 if(drawingTower){
                     drawingTower = false;
-                    currentGameWorld.setTower(eventPosition);
+                    currentGameWorld.placeCreatedTower(eventPosition);
                 }
                 break;
 
@@ -132,13 +132,13 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-    public void addTowerButtonLogic(MotionEvent event){
-        if(gamePaused){
+    public void addDefenceButtonLogic(MotionEvent event, String typeOfButton){
+
             drawingTower = true;
             Position eventPosition = new Position(event.getRawX() , event.getRawY());
-            currentGameWorld.createTower(context,eventPosition);
+            currentGameWorld.createDefence(context,eventPosition,typeOfButton);
             this.onTouchEvent(event);
-        }
+
     }
 
     public void toggleGame(){
