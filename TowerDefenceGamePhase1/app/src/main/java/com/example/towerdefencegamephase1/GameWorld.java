@@ -246,10 +246,12 @@ public class GameWorld {
                 spawnedEnemies.remove(i);
                 mHUD.updateLives();
             }
-
             // Checks if the enemy is dead, and if they are removes them from the game.
-            if(spawnedEnemies.get(i).isDead()) {
+            else if(spawnedEnemies.get(i).isDead()) {
                 spawnedEnemies.remove(i);
+            }
+            else {
+                continue;
             }
         }
         moveEnemy(); // does the enemy movement.
