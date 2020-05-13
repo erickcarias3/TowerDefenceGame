@@ -10,11 +10,12 @@ public class Troll extends Enemy {
 
     public Troll(float startingX, float startingY, Bitmap enemyBitmap) {
         super(startingX, startingY, enemyBitmap);
-        mspeed = 9;
+        mspeed = 8;
         mhealth = 20;
         mdead = false;
     }
 
+    @Override
     public void updateHealth(int damage) {
         mhealth -= damage;
         if (mhealth <= 0) {
@@ -22,6 +23,7 @@ public class Troll extends Enemy {
         }
     }
 
+    @Override
     public boolean isDead() {
         return mdead;
     }

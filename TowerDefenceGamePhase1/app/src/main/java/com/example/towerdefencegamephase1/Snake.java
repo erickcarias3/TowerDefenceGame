@@ -14,6 +14,7 @@ public class Snake extends Enemy{
         mdead = false;
     }
 
+    @Override
     public void updateHealth(int damage) {
         mhealth -= damage;
         if (mhealth <= 0) {
@@ -21,6 +22,7 @@ public class Snake extends Enemy{
         }
     }
 
+    @Override
     public boolean isDead() {
         return mdead;
     }

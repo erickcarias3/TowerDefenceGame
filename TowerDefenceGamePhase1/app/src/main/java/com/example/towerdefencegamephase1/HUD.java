@@ -20,9 +20,11 @@ public class HUD {
 
     private int mLives = 10;
     private int mGold = 20;
-    private int mWave = 1;
+    private int mWave = 0;
     private final int waveTimer = 20;
     private int mTimer = waveTimer;
+    private boolean spawn = true;
+    private boolean newWave = true;
 
     private long countdown_milliseconds = 1000;
     private long saved_milli_time = 0;
@@ -104,6 +106,8 @@ public class HUD {
 
     public void updateLives() {mLives--;}
 
+    public int getLives() {return mLives;}
+
     public void updateGold(int pointValue) { mGold += pointValue; }
 
     public void updateTimer() {
@@ -117,6 +121,7 @@ public class HUD {
         if ( countdown_milliseconds <= 0) {
             mTimer--;
             countdown_milliseconds = 1000;
+            spawn = true;
         }
 
         if (mTimer == 0) {
@@ -125,15 +130,36 @@ public class HUD {
 
         saved_milli_time = current_time_milliseconds;
 
-
     }
 
     public void resetTimer() {
         mTimer = waveTimer;
         countdown_milliseconds = 1000;
+        newWave = true;
     }
 
     public int getScreenWidth() {return mScreenWidth;}
 
     public int getWave() { return mWave; }
+
+    public void updateWave() { mWave++; }
+
+    public void setSpawn() { spawn = false; }
+
+    public boolean getSpawn() { return spawn; }
+
+    public int getTimer() { return mTimer; }
+
+    public boolean getNewWave() { return newWave;}
+
+    public void setNewWave() {newWave = false;}
+
+    public void resetGame() {
+        resetTimer();
+        spawn = true;
+        mWave = 0;
+        mLives = 10;
+        mGold = 20;
+        newWave = true;
+    }
 }

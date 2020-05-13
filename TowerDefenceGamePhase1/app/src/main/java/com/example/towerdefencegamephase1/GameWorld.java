@@ -24,6 +24,7 @@ public class GameWorld {
 
     // Array of enemies
     private ArrayList<Enemy> spawnedEnemies = new ArrayList<>();
+    private ArrayList<Enemy> enemyHoldingList = new ArrayList<>();
 
     public Position canvasPosition = new Position();
 
@@ -103,60 +104,48 @@ public class GameWorld {
         skeletonBitmap = Bitmap.createScaledBitmap(skeletonBitmap,enemyHeight,enemyWidth,true);
         snakeBitmap = Bitmap.createScaledBitmap(snakeBitmap, enemyHeight, enemyWidth, true);
         trollBitmap = Bitmap.createScaledBitmap(trollBitmap, enemyHeight, enemyWidth, true);
-/*
-        Added for when we get wave counting working otherwise we just spawn a few of the different
-        enemies.
+
+        //Added for when we get wave counting working otherwise we just spawn a few of the different
+        //enemies.
 
         if(currentWave < 3){
-            number_of_enemies_to_spawn = currentWave * 10;
+            number_of_enemies_to_spawn = currentWave * 2;
 
             for (int i = 0; i < number_of_enemies_to_spawn; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+                enemyHoldingList.add(new Skeleton(-10, -10, skeletonBitmap));
             }
-        } else if (currentWave >= 3 && currentWave < 7) {
-            number_of_enemies_to_spawn = currentWave * 10;
+        } else if (currentWave >= 3 && currentWave < 10) {
+            number_of_enemies_to_spawn = currentWave * 2;
 
             float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.7f;
             float number_of_snakes = (float)number_of_enemies_to_spawn * 0.3f;
 
             for (int i = 0; i < number_of_skeletons; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+                enemyHoldingList.add(new Skeleton(-10, -10, skeletonBitmap));
             }
 
             for (int i = 0; i < number_of_snakes; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, snakeBitmap));
+                enemyHoldingList.add(new Snake(-10, -10, snakeBitmap));
             }
         } else {
-            number_of_enemies_to_spawn = currentWave * 10;
+            number_of_enemies_to_spawn = 20;
 
-            float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.7f;
-            float number_of_snakes = (float)number_of_enemies_to_spawn * 0.2f;
-            float number_of_trolls = (float)number_of_enemies_to_spawn * 0.1f;
+            float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.5f;
+            float number_of_snakes = (float)number_of_enemies_to_spawn * 0.3f;
+            float number_of_trolls = (float)number_of_enemies_to_spawn * 0.2f;
 
             for (int i = 0; i < number_of_skeletons; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+                enemyHoldingList.add(new Skeleton(-10, -10, skeletonBitmap));
             }
 
             for (int i = 0; i < number_of_snakes; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, snakeBitmap));
+                enemyHoldingList.add(new Snake(-10, -10, snakeBitmap));
             }
 
             for (int i = 0; i < number_of_trolls; ++i) {
-                spawnedEnemies.add(new Skeleton(-10, -10, skeletonBitmap));
+                enemyHoldingList.add(new Troll(-10, -10, trollBitmap));
             }
         }
-
- */
-
-
-        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Skeleton(-10,-10, skeletonBitmap));
-        spawnedEnemies.add(new Snake(-10,-10, snakeBitmap));
-        spawnedEnemies.add(new Troll(-10,-10, trollBitmap));
-
     }
 
     public void setTower(Position setPosition){
@@ -225,14 +214,36 @@ public class GameWorld {
 
     public void update(){
 
+        /*
+        if(mHUD.getLives() <= 0){
+            // GameOver
+            mHUD.resetGame();
+            spawnedEnemies.clear();
+            enemyHoldingList.clear();
+        }
+
+         */
+
+        if (mHUD.getTimer() == 20 && mHUD.getNewWave()) {
+            mHUD.updateWave();
+            createWave();
+            mHUD.setNewWave();
+        }
         mHUD.updateTimer();
 
-        if (spawnedEnemies.size() == 0)
-            createWave();
+        if (mHUD.getSpawn() && enemyHoldingList.size() > 0) {
+            spawnedEnemies.add(enemyHoldingList.get(0));
+            enemyHoldingList.remove(0);
+            mHUD.setSpawn();
+        }
 
         for( int i = 0; i < spawnedEnemies.size(); ++i) {
             if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
+                spawnedEnemies.remove(i);
                 mHUD.updateLives();
+            }
+            if(spawnedEnemies.get(i).isDead()) {
+                spawnedEnemies.remove(i);
             }
         }
         moveEnemy();

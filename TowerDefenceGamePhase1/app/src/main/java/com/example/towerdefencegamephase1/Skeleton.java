@@ -15,6 +15,7 @@ public class Skeleton extends Enemy {
         mdead = false;
     }
 
+    @Override
     public void updateHealth(int damage) {
         mhealth -= damage;
         if (mhealth <= 0) {
@@ -22,6 +23,7 @@ public class Skeleton extends Enemy {
         }
     }
 
+    @Override
     public boolean isDead() {
         return mdead;
     }
