@@ -90,7 +90,7 @@ public class GameWorld {
         int enemyHeight = gameMap.getCellHeight();
         int enemyWidth = gameMap.getCellWidth();
 
-        int number_of_enemies_to_spawn = currentWave;
+        int number_of_enemies_to_spawn;
 
         Bitmap skeletonBitmap = BitmapFactory
                 .decodeResource(context.getResources(), R.drawable.skeleton);
@@ -114,7 +114,7 @@ public class GameWorld {
             for (int i = 0; i < number_of_enemies_to_spawn; ++i) {
                 enemyHoldingList.add(new Skeleton(-10, -10, skeletonBitmap));
             }
-        } else if (currentWave >= 3 && currentWave < 10) {
+        } else if (currentWave < 10) {
             number_of_enemies_to_spawn = currentWave * 2;
 
             float number_of_skeletons = (float)number_of_enemies_to_spawn * 0.7f;
