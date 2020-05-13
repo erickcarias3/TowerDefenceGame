@@ -244,6 +244,7 @@ public class GameWorld {
         for( int i = 0; i < spawnedEnemies.size(); ++i) {
             if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
                 spawnedEnemies.remove(i);
+                --i;
                 mHUD.updateLives();
             }
             // Checks if the enemy is dead, and if they are removes them from the game.
