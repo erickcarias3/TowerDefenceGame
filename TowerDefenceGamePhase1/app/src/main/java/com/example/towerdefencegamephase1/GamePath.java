@@ -93,8 +93,8 @@ public class GamePath {
         }
 
         if(nextPointOnMap == mapPoints.length  && location.x >= mapPoints[mapPoints.length - 1].x){
-            location.x = getStart().x;
-            location.y = getStart().y;
+            //location.x = getStart().x;
+            //location.y = getStart().y;
             nextPointOnMap = 1;
         }
 
