@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
 
+
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
@@ -25,6 +26,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Add Tower" />
+        <Button
+            android:id="@+id/addArcher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add archer" />
+        <Button
+            android:id="@+id/addCatapult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add catapult" />
 
         <Button
             android:id="@+id/gameToggle"

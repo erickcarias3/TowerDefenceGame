@@ -1,6 +1,7 @@
 package com.example.towerdefencegamephase1;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,7 +9,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 
     GameView currentGameView;
-    Button addTower, gameToggle;
+    Button addTower, addCatapult, addArcher, gameToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,19 +18,13 @@ public class MainActivity extends Activity {
 
         currentGameView = findViewById(R.id.gameView);
         addTower = findViewById(R.id.addTower);
+        addCatapult = findViewById(R.id.addCatapult);
+        addArcher = findViewById(R.id.addArcher);
         gameToggle = findViewById(R.id.gameToggle);
 
         currentGameView.initializeCurrentView(getWindowManager(), this);
 
-        gameToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentGameView.toggleGame();
-            }
-        });
-
-       addTower.setOnTouchListener(new CustomOnTouchListner(currentGameView));
-
+        initializeButtons();
 
     }
 
@@ -43,6 +38,18 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         currentGameView.pause();
+    }
+
+    protected void initializeButtons(){
+
+        gameToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentGameView.toggleGame();
+            }
+        });
+
+        addTower.setOnTouchListener(new CustomOnTouchListner(currentGameView));
     }
 
 }
