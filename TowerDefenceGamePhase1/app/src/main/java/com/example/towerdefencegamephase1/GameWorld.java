@@ -214,39 +214,45 @@ public class GameWorld {
 
     public void update(){
 
-        /*
+        /* Disabled for testing..
         if(mHUD.getLives() <= 0){
             // GameOver
             mHUD.resetGame();
             spawnedEnemies.clear();
             enemyHoldingList.clear();
         }
-
          */
 
+        // checks the timer and checks if its okay to generate spawn list so it only happens once.
         if (mHUD.getTimer() == 20 && mHUD.getNewWave()) {
             mHUD.updateWave();
             createWave();
-            mHUD.setNewWave();
+            mHUD.setNewWave(); // turns off wave creation.
         }
         mHUD.updateTimer();
 
+        // Checking to see if it's okay to spawn another enemy and checking to see that there is an
+        // enemy to spawn in the holding list.
         if (mHUD.getSpawn() && enemyHoldingList.size() > 0) {
             spawnedEnemies.add(enemyHoldingList.get(0));
             enemyHoldingList.remove(0);
             mHUD.setSpawn();
         }
 
+        // Spawned enemies being checked to see if they went off screen, if they did they are
+        // removed from the game.
         for( int i = 0; i < spawnedEnemies.size(); ++i) {
             if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
                 spawnedEnemies.remove(i);
                 mHUD.updateLives();
             }
+
+            // Checks if the enemy is dead, and if they are removes them from the game.
             if(spawnedEnemies.get(i).isDead()) {
                 spawnedEnemies.remove(i);
             }
         }
-        moveEnemy();
+        moveEnemy(); // does the enemy movement.
 
         checkTowerTargeting();
 
@@ -254,6 +260,7 @@ public class GameWorld {
 
     public void moveEnemy(){
 
+        // updates all of the enemies pathing.
         for( int i = 0; i < spawnedEnemies.size(); ++i) {
             gameMap.followPath(spawnedEnemies.get(i));
         }
