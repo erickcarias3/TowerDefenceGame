@@ -16,7 +16,6 @@ public class GameGrid {
 
     private Rect selectedTower;
     private Rect[] guideCells = new Rect[2];
-   // private ArrayList<Rect> selectedTools = new ArrayList<>();
 
 
     public GameGrid(int numColumns, int numRows, int screenWidth, int screenHeight) {

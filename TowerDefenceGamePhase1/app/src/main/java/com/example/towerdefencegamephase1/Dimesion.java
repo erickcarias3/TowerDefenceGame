@@ -1,5 +1,6 @@
 package com.example.towerdefencegamephase1;
 
+//a class to hold dimensions
 public class Dimesion {
     private int width;
     private int height;

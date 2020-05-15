@@ -4,6 +4,7 @@ import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.view.View;
 
+//this is a custom touch listener class to implement the drag and drop feature on the buttons
 public class CustomOnTouchListner implements View.OnTouchListener {
 
     private GameView currentGame;
@@ -12,6 +13,7 @@ public class CustomOnTouchListner implements View.OnTouchListener {
         this.currentGame = currentGame;
     }
 
+    //sends information to the current game about which button is pressed
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         handleButtonAnimation(v, event);

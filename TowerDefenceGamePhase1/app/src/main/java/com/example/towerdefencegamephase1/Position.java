@@ -2,7 +2,6 @@ package com.example.towerdefencegamephase1;
 
 
 /*
-            :Welcome To the Position Class:
        This class is to hold x and y coordinates in float values
        for various items
 

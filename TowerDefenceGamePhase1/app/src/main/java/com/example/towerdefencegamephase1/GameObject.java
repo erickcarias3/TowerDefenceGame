@@ -3,6 +3,7 @@ package com.example.towerdefencegamephase1;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+//towers and enmies will use the game object class to perform some of its core functions
 public abstract class GameObject {
     Bitmap objectBitmap;
     protected Position location;

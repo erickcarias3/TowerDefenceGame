@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
+//this is a projectile class that will be animated whenever a shot is taken
 public class RockProjectile extends GameObject {
 
     private int speed = 5;
@@ -31,8 +32,7 @@ public class RockProjectile extends GameObject {
         createShotPath(enemyPath);
     }
 
-
-
+    //creates shot trajectory
     private void createShotPath(GamePath path){
 
         int testPosition = targetedEnemy.getNextTurn();

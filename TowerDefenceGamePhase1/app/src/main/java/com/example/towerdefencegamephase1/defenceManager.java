@@ -9,24 +9,27 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-public class TowerManager {
+//logic for the towers and the shot animation
+public class defenceManager {
     private Tower testTower;
     private ArrayList<RockProjectile> shots = new ArrayList<>();
     private Context context;
     private GameMap gameMap;
 
-    public TowerManager(Context context, GameMap gameMap){
+    public defenceManager(Context context, GameMap gameMap){
         this.context = context;
         this.gameMap = gameMap;
 
 
     }
 
+    //places tower when a user lifts finger
     public void setTower( Rect[] occupiedCells, ArrayList<Tower> allTowers){
         testTower.placeTower(occupiedCells);
         allTowers.add(testTower);
     }
 
+    //creates a new tower
     public void createTower(Context context, Position startingPosition, GameMap gameMap, String defenceType ){
 
         Bitmap newDefenceBitmap;
@@ -110,16 +113,18 @@ public class TowerManager {
         }
     }
 
+    //fires shots appropriately for each tower
     public void fireShots(ArrayList<Tower> allTowers){
         for(Tower tower: allTowers){
             Enemy targetEnemy = tower.getCurrentTarget();
             if(tower.checkShotStatus() && targetEnemy != null){
-                takeShot(targetEnemy,tower);
+                createShot(targetEnemy,tower);
             }
         }
     }
 
-    private void takeShot(Enemy enemy, Tower tower ){
+    //spawns in a new RockProjectile
+    private void createShot(Enemy enemy, Tower tower ){
         int projectileHeight = gameMap.getCellHeight()/ 2 ;
         int projectileWidth = gameMap.getCellWidth()/2;
 

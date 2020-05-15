@@ -3,6 +3,7 @@ package com.example.towerdefencegamephase1;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+//the game path is used to hold enemy path information
 public class GamePath {
 
     private Path roadPath;
@@ -15,11 +16,13 @@ public class GamePath {
         createPath(mapCells, cellWidth);
     }
 
+    //created the turning poing array
     private void addTurningPoint(int positionInArray, Position position, Heading heading){
         mapPoints[positionInArray] = new TurningPoint(position, heading);
         addToPath(positionInArray, position);
     }
 
+    //creates the path
     private void addToPath(int positionInRoadMap, Position position){
         if(positionInRoadMap == 0){
             roadPath.moveTo(position.x,position.y);
@@ -42,6 +45,7 @@ public class GamePath {
         return nextPosition(enemy.getLocationOnMap() , enemy.getSpeed(), enemy.getNextTurn());
     }
 
+    //updates the position with the next turn that is anticipated
     public int nextPosition(Position location, int speed, int nextPointOnMap){
         Heading direction = mapPoints[nextPointOnMap - 1].getTurningDirection();
 

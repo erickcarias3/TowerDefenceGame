@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+//game map is a grid that uses path to create the entire map and its path
 public class GameMap extends GameGrid{
 
     private Bitmap map;
@@ -48,7 +49,6 @@ public class GameMap extends GameGrid{
             enemy.setNextTurn(enemyPath.follow(enemy));
         }
     }
-
 
     public Bitmap getMap() {
         return map;

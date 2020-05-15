@@ -15,7 +15,7 @@ public class GameWorld {
 
     private GameMap gameMap;
     private Context context;
-    public TowerManager defenceManager;
+    public com.example.towerdefencegamephase1.defenceManager defenceManager;
 
     //two test objects
     private Tower testTower;
@@ -51,7 +51,7 @@ public class GameWorld {
         gameMap = new GameMap(context, display, viewCanvas, mapDimensions);
         mHUD = new HUD();
         this.context = context;
-        defenceManager = new TowerManager(context , gameMap);
+        defenceManager = new defenceManager(context , gameMap);
     }
 
     public void draw(Boolean gamePaused){
