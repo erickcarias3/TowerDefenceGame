@@ -66,17 +66,18 @@ public class GameWorld {
             //draw the background map and grid
             gameMap.draw(viewCanvas);
 
+            //draw HUD
             mHUD.draw(viewCanvas, mPaint);
 
-            // Draws the Array List of the enemies.
-            for( int i = 0; i < spawnedEnemies.size(); ++i) {
-                spawnedEnemies.get(i).draw(viewCanvas);
-            }
+            drawEnemies();
 
+            //draws map castle
             gameMap.drawCastle(viewCanvas);
 
+            //draws towers
             defenceManager.drawTowers(viewCanvas , allTowers);
 
+            //draw shots
             defenceManager.drawShots(viewCanvas);
 
             // Draw some text while paused
@@ -88,6 +89,13 @@ public class GameWorld {
             viewSurfaceHolder.unlockCanvasAndPost(viewCanvas);
         }
 
+    }
+
+    // Draws the Array List of the enemies.
+    private void drawEnemies(){
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            spawnedEnemies.get(i).draw(viewCanvas);
+        }
     }
 
     private void createWave(){
@@ -182,50 +190,16 @@ public class GameWorld {
         return bitmapCoordinates;
     }
 
+    //Updates the game work and all of its entities
     public void update(){
 
-        /* Disabled for testing..
-        if(mHUD.getLives() <= 0){
-            // GameOver
-            mHUD.resetGame();
-            spawnedEnemies.clear();
-            enemyHoldingList.clear();
-        }
-         */
+        checkTimer();
 
-        // checks the timer and checks if its okay to generate spawn list so it only happens once.
-        if (mHUD.getTimer() == 20 && mHUD.getNewWave()) {
-            mHUD.updateWave();
-            createWave();
-            mHUD.setNewWave(); // turns off wave creation.
-        }
-        mHUD.updateTimer();
+        checkSpawnRate();
 
-        // Checking to see if it's okay to spawn another enemy and checking to see that there is an
-        // enemy to spawn in the holding list.
-        if (mHUD.getSpawn() && enemyHoldingList.size() > 0) {
-            spawnedEnemies.add(enemyHoldingList.get(0));
-            enemyHoldingList.remove(0);
-            mHUD.setSpawn();
-        }
+        updateEnemies();
 
-        // Spawned enemies being checked to see if they went off screen, if they did they are
-        // removed from the game.
-        for( int i = 0; i < spawnedEnemies.size(); ++i) {
-            if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
-                spawnedEnemies.remove(spawnedEnemies.get(i));
-                mHUD.updateLives();
-            }
-            // Checks if the enemy is dead, and if they are removes them from the game.
-            else if(spawnedEnemies.get(i).isDead()) {
-                spawnedEnemies.remove(spawnedEnemies.get(i));
-            }
-            else {
-                continue;
-            }
-        }
-        moveEnemy(); // does the enemy movement.
-
+        moveEnemy();
 
         defenceManager.checkTowerTargeting(allTowers,spawnedEnemies);
 
@@ -246,6 +220,44 @@ public class GameWorld {
 
     public void displayPausedMessage(){
         mHUD.createPausedMessage(viewCanvas, mPaint);
+    }
+
+    // Spawned enemies being checked to see if they went off screen, if they did they are
+    // removed from the game.
+    private void updateEnemies(){
+        for( int i = 0; i < spawnedEnemies.size(); ++i) {
+            if(spawnedEnemies.get(i).location.x >= mHUD.getScreenWidth()){
+                spawnedEnemies.remove(spawnedEnemies.get(i));
+                mHUD.updateLives();
+            }
+            // Checks if the enemy is dead, and if they are removes them from the game.
+            else if(spawnedEnemies.get(i).isDead()) {
+                spawnedEnemies.remove(spawnedEnemies.get(i));
+            }
+            else {
+                continue;
+            }
+        }
+    }
+
+    // Checking to see if it's okay to spawn another enemy and checking to see that there is an
+    // enemy to spawn in the holding list.
+    private void checkSpawnRate(){
+        if (mHUD.getSpawn() && enemyHoldingList.size() > 0) {
+            spawnedEnemies.add(enemyHoldingList.get(0));
+            enemyHoldingList.remove(0);
+            mHUD.setSpawn();
+        }
+    }
+
+    // checks the timer and checks if its okay to generate spawn list so it only happens once.
+    private void checkTimer(){
+        if (mHUD.getTimer() == 20 && mHUD.getNewWave()) {
+            mHUD.updateWave();
+            createWave();
+            mHUD.setNewWave(); // turns off wave creation.
+        }
+        mHUD.updateTimer();
     }
 
 }

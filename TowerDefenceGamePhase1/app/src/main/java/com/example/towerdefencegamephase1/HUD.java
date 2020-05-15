@@ -41,28 +41,6 @@ public class HUD {
         //prepareControls();
     }
 
-    /*
-    private void prepareControls() {
-        int buttonWidth = mScreenWidth / 15;
-        int buttonHeight = mScreenHeight / 12;
-        int buttonPadding = mScreenWidth / 95;
-
-        Rect towerOne = new Rect(buttonPadding,
-                mScreenHeight - (buttonHeight * 2) - buttonPadding,
-                buttonWidth + buttonPadding,
-                mScreenHeight - buttonHeight - buttonPadding);
-
-        Rect towerTwo = new Rect(buttonPadding,
-                mScreenHeight - (buttonHeight * 2) - buttonPadding,
-                (buttonWidth + buttonPadding) * 2,
-                mScreenHeight - buttonHeight - buttonPadding);
-
-        controls = new ArrayList<>();
-        controls.add(TOWER_ONE, towerOne);
-        controls.add(TOWER_TWO, towerTwo);
-    }
-    */
-
     public void draw(Canvas canvas, Paint paint) {
         // Drawing the HUD
         paint.setColor(Color.WHITE);

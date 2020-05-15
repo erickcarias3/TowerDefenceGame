@@ -38,6 +38,7 @@ public class GameMap extends GameGrid{
         enemyPath = new GamePath(gridCells, getCellWidth());
     }
 
+    //follows the path with enemy that is passed in
     public void followPath(Enemy enemy){
 
         if(enemy.getLocationOnMap().x < 0 || enemy.getLocationOnMap().y < 0){
@@ -48,10 +49,12 @@ public class GameMap extends GameGrid{
         }
     }
 
+
     public Bitmap getMap() {
         return map;
     }
 
+    //draws the map and the placement boxes
     public void draw(Canvas gameCanvas){
         Paint paint = new Paint();
 
@@ -61,19 +64,22 @@ public class GameMap extends GameGrid{
 
         gameCanvas.drawBitmap(map,0,0, null );
 
-        //gameCanvas.drawPath(enemyPath.getPath(), paint );
+        drawSelectedTowerHitbox(gameCanvas);
 
-       // gameCanvas.drawBitmap(castle,displayManger.getScreenWidth() - castle.getWidth() + 10,displayManger.getScreenHeight() - (castle.getHeight() + getGridHeight() * 9) ,null);
-
-        //drawGrid(gameCanvas);
-
-        //gameCanvas.drawPath(enemyPath.getPath(), paint );
     }
 
+    private void drawDebugItems(Canvas gameCanvas, Paint paint){
+        gameCanvas.drawPath(enemyPath.getPath(), paint );
+        drawGrid(gameCanvas);
+
+    }
+
+    //draws the castle bitmap
     public void drawCastle(Canvas gameCanvas){
         gameCanvas.drawBitmap(castle,displayManger.getScreenWidth() - castle.getWidth() + 10,displayManger.getScreenHeight() - (castle.getHeight() + getGridHeight() * 9) ,null);
     }
 
+    //returns the enemy path
     public GamePath getPath(){
         return enemyPath;
     }

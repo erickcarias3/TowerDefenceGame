@@ -55,6 +55,12 @@ public class GameGrid {
 
     }
 
+    public void drawSelectedTowerHitbox(Canvas canvas){
+        if(selectedTower != null){
+            createHitBox(selectedTower,canvas);
+        }
+    }
+
 
     //This is logic for the initialization of the grid
     public void createGrid(){
